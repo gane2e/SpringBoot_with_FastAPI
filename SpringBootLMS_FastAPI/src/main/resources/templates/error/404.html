@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>에러 페이지</title>
+    <link rel="stylesheet" href="/css/error.css">
+    <script>
+        // 오류 메시지 토글 기능
+        function toggleErrorDetails() {
+            var details = document.getElementById("error-details");
+            var button = document.getElementById("toggle-button");
+
+            if (details.style.display === "none") {
+                details.style.display = "block";
+                button.innerHTML = "오류 메시지 접기"; // 버튼 텍스트 변경
+                arrow.innerHTML = "↑"; // 화살표 방향 변경
+            } else {
+                details.style.display = "none";
+                button.innerHTML = "오류 메시지 보기"; // 버튼 텍스트 변경
+                arrow.innerHTML = "↓"; // 화살표 방향 변경
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="error-container">
+    <div class="error-header">
+        <span class="error-head">페이지 오류 안내</span>
+    </div>
+    <div class="error-content">
+        <p class="user-message">
+            홈페이지 이용에 불편을 드려 죄송합니다.<br>
+            새로고침(F5키)을 누르시거나, 잠시 후에 이용해 주십시오.<br>
+            동일한 문제가 지속적으로 발생할 경우 관리자에게 문의해주시기 바랍니다.
+        </p>
+        <!-- 오류 메시지 보기 버튼 -->
+        <button id="toggle-button" class="toggle-button" onclick="toggleErrorDetails()">오류 메시지 보기</button>
+
+        <!-- 접었다 펼 수 있는 오류 메시지 내용 -->
+        <div id="error-details" style="display: none;">
+            <p class="error-detail"><strong>경로:</strong> <span th:text="${'path: ' + path}"></span></p>
+            <p class="error-detail"><strong>상태:</strong> <span th:text="${'status: ' + status}"></span></p>
+            <p class="error-detail"><strong>타임스탬프:</strong> <span th:text="${'timestamp: ' + timestamp}"></span></p>
+            <p class="error-detail"><strong>에러:</strong> <span th:text="${'error: ' + error}"></span></p>
+            <p class="error-detail"><strong>에러들:</strong> <span th:text="${'errors: ' + errors}"></span></p>
+            <p class="error-detail"><strong>예외:</strong> <span th:text="${'exception: ' + exception}"></span></p>
+            <p class="error-detail"><strong>메시지:</strong> <span th:text="${'message: ' + message}"></span></p>
+            <!--<p class="error-detail"><strong>추적:</strong> <span th:text="${'trace: ' + trace}"></span></p>-->
+        </div>
+    </div>
+    <div class="error-footer">
+        <a href="/" class="back-link">홈으로 돌아가기</a>
+

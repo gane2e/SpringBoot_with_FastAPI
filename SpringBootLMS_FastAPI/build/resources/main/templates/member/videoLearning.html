@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <link th:href="@{/css/course/player.css}" rel="stylesheet">
+    <link th:href="@{/css/member/modal.css}" rel="stylesheet">
+    <!-- 사용자 CSS 추가 -->
+    <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
+</head>
+
+
+     <div class="player_cont">
+         <div class="left_cont">
+             <div class="category_area">
+                 <img src="/img/mark_5251227.png" class="category_img">
+                 <span class="category_title1">[[${course.categoryName}]] ></span>
+                 <span class="category_title2">[[${course.subCategoryName}]]</span>
+             </div>
+             <div class="title_area">
+                 <div class="course_title">[[${course.title}]]</div>
+             </div>
+
+             <!-- 영상플레이어 영역-->
+             <div class="playerArea">
+                 <video
+                         id="video-player"
+                         class="video-js vjs-big-play-centered"
+                         width="1340"
+                         height="670"
+                 >
+                 </video>
+             </div>
+
+             <!-- 이전차시보기 / 다음차시보기  -->
+             <div class="video_btn_area">
+                <button class="prev_btn">이전 차시보기</button>
+                <button class="next_btn">다음 차시보기</button>
+             </div>
+         </div>
+
+         <div class="right_cont">
+             <div class="r_depth1">
+                 교육 목록 (이수율 <span id="total-progress" class="blue">0%</span>)
+             </div>
+             <div class="scroll_box">
+                 <div class="inner_box">
+                     <ul>
+                         <div id="video-container">
+                             <!-- 타임리프 반복문 -->
+                             <li th:each="video, indexStat : ${courseVideo}" class="video-item"
+                                  th:classappend="${indexStat.index == 0} ? 'active' : ''"
+                                  th:attr="data-index=${indexStat.index}" th:data-url="${video.videoUrl}"
+                                  data-duration="">
+                                 <div th:text="${video.videoTitle}" class="title"></div>
+                                 <div class="line">
+                                     <span class="line2"></span>
+                                 </div>
+                                 <div class="data-area">
+                                     <span class="video-progress">진도율: 0%</span> <!-- 각 영상의 진도율 표시 -->
+                                     <button class="learn-button">학습하기</button> <!-- 학습하기 버튼 -->
+                                 </div>
+
+                             </li>
+                         </div>
+
+                     </ul>
+                 </div>
+
+                 <div class="cont_btn_list_area">
+                     <ul class="list">
+                         <li>
+                             <a  class="btn"
+                                 onclick="checkCourseStatus()">시험보기</a>
+                         </li>
+                         <li>
+                             <a href="/members/dashBoard" class="btn" >학습종료</a>
+                         </li>
+                     </ul>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+     <!-- 모달 창 -->
+     <div id="modal" class="modal">
+         <div class="modal-content">
+             <span id="closeBtn" class="close">&times;</span>
+
+             <div class="modal-title">시험은 최대 3번 까지 응시하실 수 있으며,<br>
+                 합격 점수는 <span class="blue_txt">60</span>점 입니다.
+             </div>
+             <div class="text">3차시험까지 불합격 시
+                 <span class="red_txt">교육을 다시 이수</span>하셔야 합니다.
+             </div>
+             <!-- 테이블 -->
+             <table class="custom-table">
+                 <tbody>
+                 <tr>
+                     <th>시험(1차)</th>
+                     <td th:text="${studentTest.firstAttemptStatus}"></td>
+                 </tr>
+                 <tr>
+                     <th>시험(2차)</th>
+                     <td th:text="${studentTest.secondAttemptStatus}"></td>
+                 </tr>
+                 <tr>
+                     <th>시험(3차)</th>
+                     <td th:text="${studentTest.thirdAttemptStatus}"></td>
+                 </tr>
+                 </tbody>
+             </table>
+             <ul class="modal_btn_list">
+                 <li>
+                     <a th:href="'/course/question?subCategoryId='+${course.subCategoryId}+
+                  '&studentCourseId='+${student.studentCourseId}+
+                  '&courseTitle='+${course.title}"
+                        class="modal_play_btn">시험보기</a>
+                 </li>
+             </ul>
+         </div>
+     </div>
+
+     <input id="studentCourseId" type="hidden" th:value="${student.studentCourseId}">
+     <input id="last_watched" type="hidden" th:value="${student.last_watched}">
+
+<script>
+
+    function checkCourseStatus() {
+
+        const studentCourseId = document.getElementById('studentCourseId').value;
+        const modal = document.getElementById('modal');
+
+        fetch('/student/checkCourseStatus', {
+            method: 'POST',  // POST 요청
+            headers: {
+                'Content-Type': 'application/json',  // JSON 형식으로 데이터 전송
+            },
+            body: JSON.stringify({
+                studentCourseId: studentCourseId
+            })
+        })
+            .then(response => response.text())  // 응답을 텍스트 형식으로 처리
+            .then(data => {
+                if (data === "학습완료") {
+                    modal.style.display = "block";
+                } else {
+                    alert("교육 100% 이수 후 시험에 응시하실 수 있습니다.")
+                }
+            })
+        const closeBtn = document.getElementById('closeBtn');
+        // 모달 닫기
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    }
+
+
+
+</script>
+
+     <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
+     <script src="https://cdn.sc.gl/videojs-hotkeys/0.2/videojs.hotkeys.min.js"></script> <!-- 플러그인-->
+     <script>
+         const videoContainer = document.getElementById('video-container');
+         var videoPlayer = videojs('video-player', {
+             autoplay: 'muted', // 자동재생 여부
+             controls: true,
+             loop: false, //반복재생
+             /* fluid: true, //크기제어?
+              aspectRatio: '4:3', //비율*/
+             playbackRates: [0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4], //재생속도
+             controlBar: {                      // 컨트롤 바 설정
+                 playToggle: true,                // 재생/일시정지 토글 버튼 활성화
+                 remainingTimeDisplay: true,      // 남은 시간 표시 활성화
+                 progressControl: true,           // 진행률 컨트롤 활성화
+                 pictureInPictureToggle: true,    // 화면 내 화면(PiP) 토글 버튼 활성화
+                 currentTimeDisplay: true,        // 현재 재생 시간 표시 활성화
+                 qualitySelector: true,           // 화질 선택 컨트롤 활성화
+             },
+             plugins: {
+                 hotkeys: {
+                     enableModifiersForNumber: false, /* 특정행위시 초이동하는것 방지 */
+                     seekStep: 1 /* 방향키로 1초씩 증가/감소 */
+                 }
+             }
+         });
+         const progressBars = videoContainer.querySelectorAll('.line2');
+         const videoProgressTexts = videoContainer.querySelectorAll('.video-progress');
+         const learnButtons = videoContainer.querySelectorAll('.learn-button');
+         const totalProgressText = document.getElementById('total-progress');
+         const studentCourseId = document.getElementById('studentCourseId').value;
+         let currentVideoIndex = 0;
+         let watchedVideos = new Set(); // 사용자가 시청한 영상의 인덱스 저장
+         let totalWatchedTime = 0;  // 서버로 전송할 토탈 시청시간
+         let lastWatchedTime = 0;   // 영상별 전체 시청시간
+         var enrollmentStatus = '';
+         let last_watched = document.getElementById('last_watched').value;
+         let remainingTime; //last_watched - (영상길이) 뺀 나머지 시청초
+         let targetIndex = 0;    // 마지막 시청한 영상 인덱스
+         let pausedTime = 0; // 일시정지 시점 기록
+         let isPaused = false; // 일시정지 상태 확인
+
+         document.querySelectorAll('.video-item').forEach(function(video) {
+
+             const videoUrl = video.getAttribute('data-url');
+             const videoIndex = video.getAttribute('data-index');
+             let videoElement = document.createElement('video');
+             videoElement.src = videoUrl;
+
+             videoElement.onloadedmetadata = function() {
+                 const videoDuration = videoElement.duration;
+                 const button = document.querySelector(`[data-index="${videoIndex}"]`);
+                 if (button) {
+                     button.setAttribute('data-duration', videoDuration);
+                 } else
+                     console.log("버튼이 없습니다.")
+             };
+         }); //BUTTON for-each END
+
+         // 비디오객체 로드후(0.02초)  //250106
+         setTimeout(function() {
+         const buttons = document.querySelectorAll('.video-item');
+         const durations = {}; //영상1: 10초,,영상2:15초.. 저장할 배열
+         buttons.forEach(button => {
+             const duration = button.dataset.duration;
+             const index = button.dataset.index;
+             durations[`duration${index}`] = parseFloat(duration);
+         });
+         // last_watched 값에 따라서 어느 구간에 해당하는지 체크
+         let testTotalDuration = 0;  // 누적된 총 시간
+         remainingTime = last_watched; // 남은 시간
+
+         for (let i = 0; i <= Object.keys(durations).length; i++) {
+
+             testTotalDuration += durations[`duration${i}`]; //각 영상 시간 누적
+
+             // last_watched가 이 구간 내에 있는지 체크
+             if (remainingTime < testTotalDuration) {
+                 targetIndex = i;  // 해당 영상 인덱스를 찾음
+                 remainingTime = remainingTime - (testTotalDuration - durations[`duration${i}`]); // 해당 영상에서 남은 시간
+                 break;
+             }
+         }
+             const lastSaveVideoUrl = videos[targetIndex].dataset.url; //재생할 비디오index 재생경로 지정
+             videoPlayer.src({ src: lastSaveVideoUrl, type: 'video/mp4' });
+             videoPlayer.currentTime(remainingTime);  //이전 시청한 초부터 재생하기 END
+         }, 100); // 0.1초 후에 실행 //250106 END
+
+         // 영상 목록 가져오기
+         const videos = Array.from(videoContainer.querySelectorAll('.video-item'));
+
+         // 전체 진도율 계산
+         function updateTotalProgress() {
+             const totalVideos = videos.length;
+             const watchedVideosCount = watchedVideos.size;
+             const totalPercentage = Math.floor((watchedVideosCount / totalVideos) * 100);
+             totalProgressText.textContent = totalPercentage + '%';
+             return totalPercentage;
+         }
+
+         // 현재 영상의 진행 상태를 업데이트
+         function updateProgress(index, percentage) {
+             progressBars[index].style.width = percentage + '%';
+             videoProgressTexts[index].textContent = '진도율: ' + percentage + '%';
+         }
+
+         // 학습 완료 처리
+         function markVideoAsComplete(index) {
+             const button = learnButtons[index];
+             if (!watchedVideos.has(index)) {
+                 watchedVideos.add(index);
+                 button.textContent = '학습완료'; // 버튼 텍스트 변경
+                 button.classList.add('completed'); // 버튼 스타일 변경
+             }
+         }
+
+         //비디오 정지 또는 종료시 마지막 시청시점/학습상태 저장
+         function saveLastWatchedVideo(totalWatchedTime, studentCourseId, enrollmentStatus, ProgressRate){
+             fetch('/student/lastWatchedSave', {
+                 method: 'POST',  // POST 요청
+                 headers: {
+                     'Content-Type': 'application/json',  // JSON 형식으로 데이터 전송
+                 },
+                 body: JSON.stringify({
+                     last_watched: totalWatchedTime, // 마지막 시청 시간
+                     studentCourseId: studentCourseId, //학생 강좌 ID
+                     enrollmentStatus : enrollmentStatus, //학습상태
+                     ProgressRate : ProgressRate //진도율
+                 })
+             })
+                 .then(response => response.text())
+                 .then(data => {
+                     console.log('Server data: ' + data);
+                 })
+                 .catch(error => {
+                     console.error("AJAX 오류", error)
+                 });
+         }
+
+         // 비디오 재생 이벤트 처리
+         videoPlayer.on('play', function() {
+             if (isPaused) {
+                 isPaused = false;
+             }
+         });
+
+         // 영상 종료 이벤트 핸들러
+         videoPlayer.on('ended', () => {
+             const currentProgress = progressBars[currentVideoIndex];
+
+             // 현재 영상 100%로 업데이트
+             currentProgress.style.width = '100%';
+             videoProgressTexts[currentVideoIndex].textContent = '진도율: 100%';
+
+             // 학습완료 처리
+             markVideoAsComplete(currentVideoIndex);
+
+             // 총 진도율 업데이트
+             let ProgressRate = updateTotalProgress();
+
+             lastWatchedTime = totalWatchedTime //이전시청시간할당
+
+             if (currentVideoIndex < videos.length - 1) {
+                 // 다음 영상 활성화
+                 videos[currentVideoIndex].classList.remove('active');
+                 videos[++currentVideoIndex].classList.add('active');
+
+                 // 다음 영상으로 이동
+                 const nextVideoUrl = videos[currentVideoIndex].dataset.url;
+                 videoPlayer.src({ src: nextVideoUrl, type: 'video/mp4' });
+                 videoPlayer.pause();
+                 alert('영상 학습이 완료되었습니다.');
+                 enrollmentStatus = '학습중';
+             } else {
+                 alert('모든 영상 학습이 완료되었습니다.');
+                 enrollmentStatus = '학습완료';
+                 videoPlayer.pause();
+             }
+             // 서버로 진도율 전송
+             saveLastWatchedVideo(totalWatchedTime, studentCourseId, enrollmentStatus, ProgressRate);
+         });
+
+         // 영상 정지 이벤트 핸들러
+         videoPlayer.on('pause', () => {
+             console.log("영상이 정지되었습니다.")
+             if (!isPaused) {
+                 pausedTime = videoPlayer.currentTime;
+                 isPaused = true;
+             }
+             let ProgressRate = updateTotalProgress();
+             enrollmentStatus = '학습중';
+
+             console.log("totalWatchedTime => " + totalWatchedTime)
+             // 서버로 진도율 전송
+             saveLastWatchedVideo(totalWatchedTime, studentCourseId, enrollmentStatus, ProgressRate);
+         })
+
+         // 영상 시간 업데이트 이벤트
+         videoPlayer.on('timeupdate', () => {
+
+             //일시정지가 false면 이전영상까지의 마지막시청초와 현재영상의 시청초를 그대로 더함
+             if (!isPaused) {
+                 totalWatchedTime = Number(videoPlayer.currentTime()) + Number(lastWatchedTime);
+             } else {
+                 // 일시정지가 true면 이전영상까지의 마지막 시청초와 "현재영상 시청초 - 일시정지 직전 시청초"를 더함
+                 totalWatchedTime =  Number(videoPlayer.currentTime() - pausedTime) + Number(lastWatchedTime);
+             }
+             const percentage = Math.floor((videoPlayer.currentTime() / videoPlayer.duration()) * 100);
+             updateProgress(currentVideoIndex, percentage);
+         });
+
+         // 클릭 이벤트 추가 (순차적 시청 방지)
+         videos.forEach((video, index) => {
+             const button = videos[index];
+
+             // 학습하기 버튼 클릭 시
+             button.addEventListener('click', () => {
+                 if (video.classList.contains('active') && !watchedVideos.has(index)) {
+                     const videoUrl = video.dataset.url;
+                     videoPlayer.src({ src: videoUrl, type: 'video/mp4' });
+                     videoPlayer.play();
+                 } else if (watchedVideos.has(index)) {
+                     alert('이미 학습한 영상입니다. 진도율은 변경되지 않습니다.');
+                 } else {
+                     alert('이전 영상을 모두 학습한 후에 클릭할 수 있습니다.');
+                 }
+             });
+         });
+     </script>
+
+</html>

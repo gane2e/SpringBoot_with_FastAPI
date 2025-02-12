@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="header">
+
+    <header>
+        <div id="logo">
+            <a href="/"><img src="/img/Learning.png" alt=""/></a>
+        </div>
+        <nav>
+            <div id="nav-container">
+                <ul>
+                    <li><a href="/course/courses">온라인 강의</a></li>
+                    <li><a href="#">AI 맞춤형 강의</a></li>
+                    <li sec:authorize="isAuthenticated()">
+                        <div
+                                style="
+              width: 1px;
+              height: 16px;
+              background-color: white;
+              float: left;
+              margin: 0 10px;
+            "
+                        ></div>
+                    </li>
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="/members/dashBoard">나의 수강현황
+                        <img src="/img/별똥별1.png" alt="" width="15px">
+                    </a></li>
+                </ul>
+
+                <!-- 우측내비 -->
+                <div id="navigation-right">
+                    <ul>
+                        <li><a href="#">공지사항</a></li>
+                        <li><a href="#">고객센터</a></li>
+                        <li>
+                            <div
+                                    style="
+                width: 1px;
+                height: 12px;
+                background-color: white;
+                float: left;
+                margin: 1px 10px 0 10px;
+              "
+                            ></div>
+                        </li>
+                        <li sec:authorize="isAnonymous()">
+                            <a href="/members/login">로그인</a>
+                        </li>
+                        <li sec:authorize="isAnonymous()">
+                            <a href="/members/register">회원가입</a></li>
+                        <li sec:authorize="isAuthenticated()">
+                            <a href="/members/logout">로그아웃</a></li>
+                        <li sec:authorize="isAuthenticated()">
+                            <a href="/members/modify">회원정보 수정</a></li>
+                    </ul>
+
+                    <a href="#">
+                        <img src="/img/search.png" alt=""/>
+                    </a>
+                    <a href="#" style="margin-right: 10px" onClick="modal('dialog')">
+                        <img src="/img/modal.png" alt="" class="modal_img"/>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+</div>
+
+<!--모달팝업 -->
+<div id="dialog" class="dialog">
+    <div class="tb">
+        <div class="inner" style="max-width: 800px">
+            <div class="top">
+                <div class="title">떠나요! 초신선 가을캠핑</div>
+                <a href="#" class="modal-close" style="color: black">닫기</a>
+            </div>
+            <div class="ct">
+                <img src="../img/web-popup-240927-01.png" alt=""/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    //모달 열기
+    function modal(id) {
+        $('#' + id).fadeIn();
+    }
+
+    //모달 닫기
+    $(document).ready(function () {
+        $('.modal-close').on('click', function (e) {
+            e.preventDefault();
+            const modal = $(this).closest('.dialog');
+            modal.fadeOut();
+        });
+    });
+</script>

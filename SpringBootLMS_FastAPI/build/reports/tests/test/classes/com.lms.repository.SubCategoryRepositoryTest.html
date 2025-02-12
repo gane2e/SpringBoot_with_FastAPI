@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - SubCategoryRepositoryTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>SubCategoryRepositoryTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.lms.repository.html">com.lms.repository</a> &gt; SubCategoryRepositoryTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.591s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">findSubCategoriesByCategoryIdTest()</td>
+<td class="success">0.591s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>11:14:27.774 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.lms.repository.SubCategoryRepositoryTest]: SubCategoryRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+11:14:27.902 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.lms.LmsApplication for test class com.lms.repository.SubCategoryRepositoryTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.0)
+
+2025-01-24T11:14:28.344+09:00  INFO 17908 --- [    Test worker] c.l.r.SubCategoryRepositoryTest          : Starting SubCategoryRepositoryTest using Java 17.0.0.1 with PID 17908 (started by m10 in C:\Works\SpringBootLMS)
+2025-01-24T11:14:28.346+09:00  INFO 17908 --- [    Test worker] c.l.r.SubCategoryRepositoryTest          : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2025-01-24T11:14:29.284+09:00  INFO 17908 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-01-24T11:14:29.376+09:00  INFO 17908 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 82 ms. Found 11 JPA repository interfaces.
+2025-01-24T11:14:30.044+09:00  INFO 17908 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-01-24T11:14:30.104+09:00  INFO 17908 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.2.Final
+2025-01-24T11:14:30.140+09:00  INFO 17908 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-01-24T11:14:30.425+09:00  INFO 17908 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-01-24T11:14:30.459+09:00  INFO 17908 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-01-24T11:14:30.738+09:00  INFO 17908 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@acd115d
+2025-01-24T11:14:30.741+09:00  INFO 17908 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-01-24T11:14:30.843+09:00  INFO 17908 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.39
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-01-24T11:14:30.853+09:00 DEBUG 17908 --- [    Test worker] o.h.t.d.sql.spi.DdlTypeRegistry          : addDescriptor(12, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@ef220e4) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@18bc1064)
+2025-01-24T11:14:30.854+09:00 DEBUG 17908 --- [    Test worker] o.h.t.d.sql.spi.DdlTypeRegistry          : addDescriptor(-9, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@3cab07dd) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@68f264bf)
+2025-01-24T11:14:30.854+09:00 DEBUG 17908 --- [    Test worker] o.h.t.d.sql.spi.DdlTypeRegistry          : addDescriptor(-3, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@77988c45) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@f5f8de2)
+2025-01-24T11:14:30.855+09:00 DEBUG 17908 --- [    Test worker] o.h.t.d.sql.spi.DdlTypeRegistry          : addDescriptor(4003, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@6baee63b) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@1002b06d)
+2025-01-24T11:14:30.855+09:00 DEBUG 17908 --- [    Test worker] o.h.t.d.sql.spi.DdlTypeRegistry          : addDescriptor(4001, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@234bfc8c) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@5008559a)
+2025-01-24T11:14:30.855+09:00 DEBUG 17908 --- [    Test worker] o.h.t.d.sql.spi.DdlTypeRegistry          : addDescriptor(4002, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@4c0bfe9e) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@490fbeaa)
+2025-01-24T11:14:30.856+09:00 DEBUG 17908 --- [    Test worker] o.h.t.d.sql.spi.DdlTypeRegistry          : addDescriptor(2004, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@35dc849b) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@276aa33f)
+2025-01-24T11:14:30.860+09:00 DEBUG 17908 --- [    Test worker] o.h.t.d.sql.spi.DdlTypeRegistry          : addDescriptor(2005, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@34065642) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@c85486)
+2025-01-24T11:14:30.861+09:00 DEBUG 17908 --- [    Test worker] o.h.t.d.sql.spi.DdlTypeRegistry          : addDescriptor(2011, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@51e1e058) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@23e0c200)
+2025-01-24T11:14:32.135+09:00  INFO 17908 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-01-24T11:14:32.244+09:00  INFO 17908 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-01-24T11:14:32.566+09:00  INFO 17908 --- [    Test worker] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-01-24T11:14:34.218+09:00  WARN 17908 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-01-24T11:14:34.242+09:00  INFO 17908 --- [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name principalDetailsService
+2025-01-24T11:14:34.318+09:00  INFO 17908 --- [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-01-24T11:14:35.010+09:00  INFO 17908 --- [    Test worker] c.l.r.SubCategoryRepositoryTest          : Started SubCategoryRepositoryTest in 6.955 seconds (process running for 8.117)
+Hibernate: 
+    select
+        next_val as id_val 
+    from
+        categories_seq for update
+Hibernate: 
+    update
+        categories_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+Hibernate: 
+    select
+        next_val as id_val 
+    from
+        sub_categories_seq for update
+Hibernate: 
+    update
+        sub_categories_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+Hibernate: 
+    insert 
+    into
+        categories
+        (category_name, category_id) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        sub_categories
+        (category_id, sub_category_name, sub_category_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        sub_categories
+        (category_id, sub_category_name, sub_category_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    select
+        sc1_0.sub_category_id,
+        sc1_0.category_id,
+        sc1_0.sub_category_name 
+    from
+        sub_categories sc1_0 
+    where
+        sc1_0.category_id=?
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 8.11.1</a> at 2025. 1. 24. 오전 11:14:35</p>
+</div>
+</div>
+</body>
+</html>

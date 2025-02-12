@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/sub_layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/inlineTab.css}" rel="stylesheet">
+    <link th:href="@{/css/member/pw-find.css}" rel="stylesheet">
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+
+            var certificationNumber = 0; //서버에서 보낸 인증번호
+            let timerInterval;  // setInterval을 저장할 변수
+            let timeInSeconds = 3 * 60;  // 초기 타이머 값 (3분 = 180초)
+            var userEmail;
+
+            function checkloginId(){
+                const loginId = document.getElementById("loginId").value;
+                fetch('/members/id-find-check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        loginId: loginId
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.email) {
+                            userEmail = data.email;
+                            var maskingEmail = maskEmail(userEmail);
+                            document.getElementById("checkLoginId_before").style.display = 'none';
+                            document.getElementById("masking-email").textContent = maskingEmail;
+                            document.getElementById("masking-email-2").textContent = maskingEmail;
+                            document.getElementById("request_container").style.display = 'block';
+                        }
+                        else {
+                            alert("일치하는 회원정보가 없습니다.\n아이디를 다시한번 확인해주세요.")
+                        }
+                    })
+                    .catch(error => {
+                        alert("서버통신중 오류가 발생하였습니다.")
+                        console.error("AJAX 오류", error)
+                    });
+            }
+            //checkLoginId END
+
+            //이메일마스킹 START
+            function maskEmail(email) {
+                // 이메일을 "@" 기준으로 분리
+                const [username, domain] = email.split('@');
+
+                // 이메일 아이디의 첫 3글자만 보여주고 나머지는 '*'로 마스킹
+                const maskedUsername = username.slice(0, 3) + '****';
+
+                // 도메인은 그대로 보여줌
+                return `${maskedUsername}@${domain}`;
+            }
+            //이메일마스킹 END
+
+
+            //아이디조회후 인증번호 전송 클릭 시 실행하는 메서드
+            function requestCertificationNumber(){
+                alert("인증번호 전송에 성공했습니다.")
+                document.getElementById("request_container").style.display = 'none';
+                document.getElementById("checkLoginId_after").style.display = 'block';
+                document.getElementById("requestBtn").style.display = 'none';
+                startCountdown();
+                fetch('/members/idPw-find', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: userEmail
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        certificationNumber = data.certificationNumber;
+                        console.log("인증번호 ==> " + certificationNumber);
+                    })
+            }
+
+            function startCountdown(){
+
+                timeInSeconds = 3 * 60; // 3분 = 180초
+
+                const timerElement = document.getElementById("timer");
+
+                // setInterval을 사용해 1초마다 타이머 업데이트
+                timerInterval = setInterval(function() {
+                    const minutes = Math.floor(timeInSeconds / 60); // 분 계산
+                    const seconds = timeInSeconds % 60; // 초 계산
+
+                    timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                    timeInSeconds--;
+
+                    // 타이머 종료 조건
+                    if (timeInSeconds < 0) {
+                        clearInterval(timerInterval); // 타이머 종료
+                        alert("인증시간이 만료되었습니다.");
+                    }
+                }, 1000);
+            }
+
+            function checkCertificationNumber(){
+                //사용자가 입력한 인증번호
+                const userEnteredAuthNo = document.getElementById("userEnteredAuthNo").value;
+                if(certificationNumber !=  userEnteredAuthNo) {
+                    alert("인증번호가 일치하지 않습니다.");
+                    return;
+                } else
+                    alert("인증에 성공하였습니다.")
+                    certificationSuccess()
+            }
+            //인증번호 인증 성공시 실행
+            function certificationSuccess() {
+                clearInterval(timerInterval); // 기존 타이머를 중지
+                timeInSeconds = 3 * 60; // 타이머 초기값으로 재설정 (3분)
+
+                const checkLoginId_after = document.getElementById("checkLoginId_after");
+                checkLoginId_after.style.display = 'none';
+
+                const successElement = document.getElementById('success_container');
+                successElement.style.display = 'block';
+            }
+            //비밀번호 입력 후 재설정하기 클릭 시 실행
+            function remadePw(){
+
+                const password = document.getElementById('password').value;
+                const passwordConfirm = document.getElementById('passwordConfirm').value;
+
+                console.log("password : " + password + "\n" + "passwordConfirm : " + passwordConfirm)
+
+                if(password != passwordConfirm) {
+                    alert("비밀번호 확인이 일치하지 않습니다.")
+                } else {
+                    if (confirm('비밀번호를 재설정 하시겠습니까?')) {
+                        fetch('/members/modifyPass', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                password: password
+                            })
+                        })
+                            .then(() => {
+                                alert('비밀번호 변경이 완료되었습니다.');
+                                window.location.href = '/members/login'
+                            })
+                    }
+                }
+
+            }
+        </script>
+    </th:block>
+
+    <script>
+        window.onload = function() {
+            const currentPath = window.location.pathname;
+            const idFindTab = document.getElementById('id-find-tab');
+            const passwordFindTab = document.getElementById('password-find-tab');
+
+            if (currentPath === '/id-find') {
+                idFindTab.classList.add('active-tab');
+            } else if (currentPath === '/pw-find') {
+                passwordFindTab.classList.add('active-tab');
+            }
+            idFindTab.addEventListener('click', function() {
+                window.location.href = '/id-find';  // 아이디 찾기 페이지로 이동
+            });
+            passwordFindTab.addEventListener('click', function() {
+                window.location.href = '/pw-find';  // 비밀번호 찾기 페이지로 이동
+            });
+        };
+    </script>
+</head>
+<body>
+<div layout:fragment="sub_cont">
+
+    <!-- 탭 -->
+    <div class="tabs">
+        <div id="id-find-tab" class="tab">
+            아이디 찾기
+        </div>
+        <div id="password-find-tab" class="tab">
+            비밀번호 찾기
+        </div>
+    </div>
+
+    <div id="checkLoginId" class="checkLoginId">
+        <div class="title"><span class="blue_txt">비밀번호</span> 찾기</div>
+        <div class="checkLoginId_before" id="checkLoginId_before">
+            <div class="txt">아이디가 기억나지 않으시는 경우, 아이디 찾기를 이용해주세요.</div>
+            <div class="table_area">
+                <table class="idCheckTable">
+                    <tr>
+                        <th>아이디</th>
+                        <td><input type="text" id="loginId" required></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="sub_txt">
+                ※ 입력하신 정보는 회원님의 사전 동의 없이 공개 또는 제 3 자에게 제공되지 않으며,
+                <br>개인정보보호정책에 따라 보호되고 있습니다.</div>
+
+            <ul class="btn_list">
+                <li>
+                    <button type="button" class="btn1" onclick="checkloginId()">확인</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="request_container" id="request_container" style="display: none">
+            <div class="txt">회원정보에 등록된 이메일로 인증번호가 전송됩니다.</div>
+
+            <div class="table_area">
+                <table class="idCheckTable">
+                    <tr>
+                        <th>이메일</th>
+                        <td><span id="masking-email"></span></td>
+                    </tr>
+                </table>
+            </div>
+
+            <ul class="btn_list">
+                <li>
+                    <button type="button"
+                            onclick="requestCertificationNumber()"
+                            class="btn2"
+                            id="requestBtn" style="width: 160px">인증번호 전송하기</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="checkLoginId_after" id="checkLoginId_after">
+            <div class="txt">인증번호 발송이 완료되었습니다. <br>유효시간 내에 입력해주시기 바랍니다.</div>
+            <div class="table_area">
+                <table class="idCheckTable">
+                    <tr>
+                        <th>이메일</th>
+                        <td><span id="masking-email-2"></span></td>
+                    </tr>
+                    <tr>
+                        <th>인증번호 입력</th>
+                        <td><input type="text" id="userEnteredAuthNo"></td>
+                    </tr>
+                    <tr>
+                        <th>인증 유효시간</th>
+                        <td>
+                            <div id="timer" style=" font-weight: bold; color: red;">03:00</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <ul class="btn_list">
+                <li>
+
+                    <button type="button"
+                            onclick="checkCertificationNumber()"
+                    class="btn1">확인</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="success_container" id="success_container" style="display: none">
+
+            <div class="txt">비밀번호를 재설정해주세요.</div>
+            <div class="table_area">
+                <table class="idCheckTable">
+                    <tr>
+                        <th>비밀번호</th>
+                        <td> <input type="password" id="password" name="password"></td>
+                    </tr>
+                    <tr>
+                        <th>비밀번호 확인</th>
+                        <td><input type="password" id="passwordConfirm"></td>
+                    </tr>
+                </table>
+
+                <ul class="btn_list">
+                    <li>
+                        <button type="button"
+                                onclick="remadePw()"
+                                class="btn1">재설정하기</button>
+                    </li>
+                </ul>
+
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+</div>
+</body>
+</html>

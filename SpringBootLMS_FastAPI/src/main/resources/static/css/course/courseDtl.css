@@ -1,0 +1,346 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+html {
+    scroll-behavior: smooth;
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none; /* hover 시에도 밑줄 없애기 */
+}
+
+ul.list {
+
+    position: sticky;
+    top: 0; /* 화면 위에서 10px 떨어진 위치에 고정 */
+
+    width: 100%;
+    list-style: none;
+    background: #eeeeee;
+    margin-bottom: 50px;
+    border: 1px solid #e1e1e1;
+}
+
+.list > li {
+    display: inline-block;
+    width: 33%;
+    height: 64px;
+}
+
+.list_index {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.list_index.selected {
+    border-top: 3px solid #1f8ce9;
+    background: #ffffff;
+}
+
+.list_index_title {
+    color: #222222;
+    font-weight: 600;
+}
+
+.sub_cont {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left_cont {
+    display: inline-block;
+    width: 1040px;
+    padding-right: 30px;
+}
+
+.category_area {
+    padding-bottom: 15px;
+}
+
+.category_img {
+    display: inline;
+    width: 20px;
+    height: 20px;
+}
+.category_title1 {
+    color: #1f8ce9;
+}
+.category_title2 {
+    color: #828282;
+}
+
+.top_title_area {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e0e0e0;
+}
+.top_title {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.course_title {
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 48px;
+    color: #333333;
+}
+.hashtag_box {
+    margin: 20px 0;
+}
+
+.period_box {
+    margin-bottom: 30px;
+    color: #828282;
+}
+
+.hashTag {
+    border: 1px solid #eeeeee;
+    border-radius: 15px;
+    padding: 2px 15px 2px 10px;
+    margin: 0 5px;
+}
+
+/* 콘텐츠 내 타이틀 (교육소개, 목차, 수료기준) */
+
+.title_area{
+    display: flex;
+    width: 100%;
+    height: 37px;
+    margin-bottom: 17px;
+}
+
+.title_before {
+    display: inline-block;
+    width: 5px;
+    height: 100%;
+    background: #1F8CE9;
+}
+
+.title {
+    display: inline-block;
+    padding: 0 0 0 15px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 36px;
+    color: #2f2f2f;
+}
+
+.edu_cont_area {
+    width: 100%;
+    padding: 35px;
+    margin-bottom: 17px;
+    border: 1px solid #eeeeee;
+}
+
+.table_basics_area {
+    width: 100%;
+    border-top: 2px solid #757575;
+    text-align: center;
+    border-collapse: collapse;
+    table-layout: fixed;
+    box-sizing: border-box
+}
+
+.table_basics_area th {
+    background: #f7f7f7;
+}
+
+.table_basics_area th, td {
+    height: 52px;
+}
+
+.table_basics_area th:nth-child(1) {
+    width: 15%;
+}
+
+.table_basics_area th:nth-child(3) {
+    width: 25%;
+}
+
+
+
+.right_cont {
+    display: inline-block;
+    width: 320px;
+    /*height: 1000px;*/
+    align-items: center;
+
+}
+
+.inner_box_container {
+    position: sticky;
+    top: 10px; /* 화면 위에서 10px 떨어진 위치에 고정 */
+}
+
+.inner_box {
+    width: 256px;
+    padding-right: 32px;
+    padding-left: 32px;
+    padding-top: 32px;
+    box-sizing: content-box;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.inner {
+    display: flex;
+    max-width: 100%;
+    max-height: 100%;
+    align-items: center;
+}
+.inner img {
+    width: 100%;
+    max-height: 100%;
+}
+
+.m_cont_title {
+    margin: 10px 0 12px;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    color: #333333;
+}
+
+.m_cont_tit {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 30px;
+    color: #1F8CE9;
+}
+
+/* 수료기준 옆 체크아이콘 */
+.check_img {
+    width: 18px;
+    height: 18px;
+    margin-right: 3px;
+}
+
+/* 수강신청하기, 목록 버튼 */
+
+
+.bottom_list{
+    width: 100%;
+    list-style: none;
+}
+
+.btn {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.first_btn{
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 18px;
+
+}
+
+.second_btn {
+    color: #929292;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.bottom_list > li {
+    display: block;
+    width: 100%;
+    height: 48px;
+}
+
+.bottom_list > li:nth-child(1){
+    background: #0076c0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.bottom_list > li:nth-child(2){
+    background: #fcfcfc;
+    border-radius: 10px;
+    border: 1px solid #656565;
+}
+
+
+
+/* 상세내용  */
+.m_cont_txt {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    color: #757575;
+    padding-bottom: 20px;
+}
+
+
+/* 미리보기 버튼 스타일 */
+.openPreview {
+    display: inline-flex;
+    align-items: center;
+    background-color: transparent; /* 기본 배경을 투명으로 설정 */
+    color: #0076c0; /* 기본 텍스트 색은 파란색 */
+    padding: 8px 16px; /* 버튼 크기 (작게) */
+    border: 1px solid #0076c0; /* 파란색 테두리 */
+    border-radius: 30px; /* 더 둥근 모서리 */
+    font-size: 14px; /* 텍스트 크기 */
+    text-decoration: none; /* 텍스트 밑줄 제거 */
+    transition: background-color 0.3s, color 0.3s, transform 0.3s; /* 부드러운 전환 효과 */
+    margin-top: 5px;
+}
+
+.openPreview i {
+    margin-right: 6px; /* 아이콘과 텍스트 사이 여백 */
+    font-size: 16px; /* 아이콘 크기 */
+}
+
+/* 호버 효과 */
+.openPreview:hover {
+    background-color: #0076c0; /* 호버 시 배경색을 파란색으로 채움 */
+    color: #fff; /* 호버 시 텍스트 색상은 흰색으로 변경 */
+}
+
+.openPreview:active {
+    transform: translateY(1px); /* 클릭 시 눌리는 효과 */
+}
+
+/* 미리보기 버튼의 focus 상태 */
+.openPreview:focus {
+    outline: none; /* 포커스 시 외곽선 제거 */
+}
+
+/* 버튼에 마우스를 올렸을 때 아이콘 크기 키우기 */
+.openPreview:hover i {
+    font-size: 18px; /* 아이콘 크기 증가 */
+}
+.playerArea {
+    border: 1px solid #eeeeee;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    background: #000000;
+    padding: 10px;
+    margin: 0 80px;
+}
+.status {
+    display: inline-block;
+    background-color: rgba(255, 0, 0, 0.7); /* 반투명한 빨간색 배경 */
+    color: white;
+    padding: 5px 10px;
+    margin-top: 3px;
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+}

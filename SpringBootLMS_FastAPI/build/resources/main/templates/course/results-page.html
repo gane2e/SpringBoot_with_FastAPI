@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/sub_layout}">
+<head>
+    <link th:href="@{/css/results.css}" rel="stylesheet">
+    <link th:href="@{/css/course/rating.css}" rel="stylesheet">
+    <!-- 사용자 CSS 추가 -->
+
+    <div layout:fragment="sub_cont" >
+
+        <div class="success_container">
+
+            <div class="title">
+
+                <img th:if="${testStatus eq completion}"
+                     src="/img/pass.png" class="icon"><br>
+
+                <img th:unless="${testStatus eq completion}"
+                        src="/img/fail.png" class="icon"><br>
+                [[${name}]]님의 시험<span class="blue">([[${testCount}]]차)</span>점수는 <span class="blue">[[${totalScore}]]</span>점으로, [[${testStatus}]] 처리되었습니다.
+            </div>
+
+            <div class="text" th:if="${testStatus ne completion and testCount != 3}">
+                시험은 최대 3번까지 응시하실 수 있으며, 합격 점수는 60점입니다. <br>
+                <span class="bold">3차시험까지 불합격 시 교육을 다시 이수하셔야 합니다.</span>
+            </div>
+
+            <div class="text" th:if="${testStatus ne completion and testCount == 3}">
+                3회차 불합격입니다. <br>
+                <span class="bold">교육을 처음부터 다시 이수해주시기 바랍니다.</span>
+            </div>
+
+            <div class="text" th:if="${testStatus eq completion}">
+              이수하신 교육은 어떠셨나요? <br>
+                <span class="bold">별점을 등록해주시면 최종 수료가 완료됩니다.</span>
+
+                <div class="star-rating">
+                    <input type="radio" name="rating" class="star" value="1">
+                    <input type="radio" name="rating" class="star" value="2">
+                    <input type="radio" name="rating" class="star" value="3">
+                    <input type="radio" name="rating" class="star" value="4">
+                    <input type="radio" name="rating" class="star" value="5">
+                </div>
+
+                <!-- 별점 END -->
+            </div>
+
+
+            <ul class="btn_list">
+
+                <!-- 1,2회차면서 불합격일시 표출 -->
+                <li th:if="${testStatus ne completion and testCount != 3}"> <!-- 불합격일 때 [재시험보기] 버튼 표출 -->
+                    <a th:href="'/course/question?subCategoryId='+${subCategoryId}+
+                  '&studentCourseId='+${studentCourseId}+
+                  '&courseTitle='+${courseTitle}"
+                       class="btn1">재시험보기</a>
+                </li>
+
+                <!-- 3회차면서 불합격일 시 표출 -->
+                <li th:if="${testStatus ne completion and testCount == 3}"> <!-- 불합격일 때 [재시험보기] 버튼 표출 -->
+                    <a th:href="'/course/video/'+${applicationId}"
+                       class="btn1">다시 학습하기</a>
+                </li>
+
+                <!-- 대시보드로 이동 -->
+                <li>
+                    <a onclick="saveRating()" class="btn2">확인</a>
+                    <input type="hidden" th:value="${courseId}" id="courseId">
+                </li>
+            </ul>
+        </div>
+
+        <th:block layout:fragment="script">
+
+            <script th:inline="javascript">
+
+                const rating = document.getElementsByName('rating')
+                const courseId = document.getElementById('courseId').value;
+                let selectedRating = null;
+
+                function saveRating(){
+
+                    for (let i = 0; i < rating.length; i++) {
+                        if (rating[i].checked) {
+                            selectedRating = rating[i].value; // 선택된 rating 값
+                            break; // 선택된 값이 있으면 루프 종료
+                        }
+                    }
+                    if(selectedRating != null){
+                        fetch('/course/saveRating', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                rating: selectedRating,
+                                courseId: courseId
+                            })
+                        })
+                            .then(() => {
+                                alert("별점 등록이 완료되었습니다.\n수료증은 [나의 수강현황]에서 출력하실 수 있습니다.")
+                                window.location.href = '/members/dashBoard';
+                            })
+                            .catch(error => {
+                                alert("서버통신중 오류가 발생하였습니다.")
+                                console.error("AJAX 오류", error)
+                            });
+                    } else
+                        alert("별점을 선택해주세요.")
+                }
+            </script>
+        </th:block>
+
+    </div>
+
+</html>

@@ -1,0 +1,106 @@
+/* 전반적인 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fff; /* 배경색을 하얀색으로 */
+    color: #333;
+    padding: 20px;
+}
+
+/* 에러 페이지 컨테이너 */
+.error-container {
+    width: 100%;
+    max-width: 800px;
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* 에러 헤더 */
+.error-header {
+    margin-bottom: 20px;
+}
+
+.error-head {
+    font-size: 1.51em;
+    font-weight: bold;
+}
+
+/* 에러 정보 콘텐츠 */
+.error-content {
+    margin-bottom: 18px;
+}
+
+.error-detail {
+    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.error-detail strong {
+    font-weight: bold;
+    color: #333;
+}
+
+/* 사용자 안내 메시지 스타일 */
+.user-message {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.user-message br {
+    margin-bottom: 10px;
+}
+
+/* 오류 메시지 보기 버튼 스타일 */
+.toggle-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+
+.toggle-button:hover {
+    background-color: #0056b3;
+}
+
+/* 접은 상태의 오류 메시지 */
+#error-details {
+    display: none;
+}
+
+/* 링크 스타일 */
+.error-footer {
+    margin-top: 10px;
+}
+
+.back-link {
+    font-size: 18px;
+    color: #007bff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    background-color: white;
+    transition: background-color 0.3s;
+}
+
+.back-link:hover {
+    background-color: #007bff;
+    color: white;
+}

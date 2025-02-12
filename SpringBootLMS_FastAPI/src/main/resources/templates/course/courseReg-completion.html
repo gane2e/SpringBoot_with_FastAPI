@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/sub_layout}">
+<head>
+  <link th:href="@{/css/completion.css}" rel="stylesheet">
+  <!-- 사용자 CSS 추가 -->
+
+  <div layout:fragment="sub_cont" >
+
+    <div class="success_container">
+
+      <div class="title">
+        <img src="/img/success_icon.png" class="icon"><br>
+        <span th:text="${course.title}" class="blue"></span>
+       <br>
+        수강신청이 완료되었습니다.
+      </div>
+      <div class="text2">[교육기간]
+        <span>[[${course.course_start_date}]] ~ [[${course.course_end_date}]]</span>
+      </div>
+      <div class="text">
+        신청내역은
+        <span class="bold">[나의 수강현황]</span>
+        메뉴에서 확인하실 수 있습니다.
+      </div>
+      <ul class="btn_list">
+        <li>
+          <a th:href=" '/course/video/' + ${applicationId}" class="btn1">학습하기</a>
+        </li>
+        <li>
+          <a href="/members/dashBoard" class="btn2">학습내역 보기</a>
+        </li>
+      </ul>
+    </div>
+
+
+  </div>
+
+</html>

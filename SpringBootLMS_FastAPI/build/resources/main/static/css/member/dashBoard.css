@@ -1,0 +1,304 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a, a:hover{
+    text-decoration: none;
+}
+.inner {
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.category_img {
+    display: inline;
+    width: 17px;
+    height: 17px;
+}
+.menu_title {
+    color: #1f8ce9;
+}
+
+.name, .description {
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 48px;
+    color: #333333;
+}
+
+.blue_txt {
+    color: #1f8ce9;
+}
+
+
+/* 아이콘리스트 시작 */
+.list {
+    display: flex;
+    width: 100%;
+    list-style: none;
+    margin: 50px 0 70px 0;
+}
+
+.list > li {
+    width: 20%;
+}
+
+/* 대시보드아이콘 */
+.box_icon1 {
+    display: flex;
+}
+
+.box_icon1 img {
+    padding-right: 30px;
+}
+
+.icon_txt_container {
+    display: block;
+}
+
+.icon_txt_container > .tit {
+    padding: 7px 0 0;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.num_number {
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 60px;
+    color: #424242;
+}
+
+.title_area{
+    display: flex;
+    width: 100%;
+    height: 37px;
+    margin-bottom: 17px;
+}
+
+.title_before {
+    display: inline-block;
+    width: 5px;
+    height: 100%;
+    background: #1F8CE9;
+}
+
+.title {
+    display: inline-block;
+    padding: 0 0 0 15px;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 36px;
+    color: #2f2f2f;
+}
+
+/* 검색기 */
+.search_box {
+    margin: 0 auto;
+    width: 100%;
+    height: 100px;
+    background: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px 60px;
+    margin-bottom: 30px;
+}
+
+/* 공통 스타일 */
+input{
+    font-size: 16px;
+    border: 1px solid #dfdfdf;
+    padding: 10px;
+    border-radius: 3px;
+    outline: none;
+    width: 100%;
+    height: 40px;
+}
+
+input:focus {
+    border-color: #e0e0e0; /* 포커스 시 테두리 색상 변경 */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 포커스 시 강조 효과 */
+}
+
+.search_title {
+    display: inline;
+    margin-right: 20px;
+}
+
+.scrh_inp {
+    width: 1030px;
+}
+
+.search_btn {
+    all: unset; /* 버튼의 모든 기본 스타일 제거 */
+    display: inline-block;
+    padding: 0 20px;
+    background-color: #54575e;
+    border-radius: 3px;
+    color: #ffffff;
+    outline: none;
+    height: 40px;
+}
+
+button:focus {
+    border-color: #007BFF; /* 포커스 시 테두리 색상 변경 */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 포커스 시 강조 효과 */
+}
+/* 검색기 END */
+
+/* 학습내역 리스트 Start */
+.current_info_list_cont {
+    border-top: 2px solid #757575;
+}
+.dashBoard_list {
+    display: flex;
+    width: 100%;
+    list-style: none;
+    margin: 30px 0 70px 0;
+    flex-direction: column;
+}
+.dashBoard_list > li {
+    margin-bottom: 25px;
+}
+
+.dashBoard_list > li > .current_info_box {
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid #e1e1e1;
+}
+
+
+/* 리스트 - 서브타이틀 */
+.sub_tit_area {
+    display: flex;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* 리스트 - 서브타이틀 - 교육카테고리 */
+.mark_list_area {
+    width: 70%;
+
+}
+.course_category_list {
+    display: flex;
+    width: 100%;
+    list-style: none;
+}
+.course_category_1, .course_category_2 {
+    padding: 0 18px;
+    font-size: 15px;
+    line-height: 24px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.course_category_1 {
+    border: 1px solid #2e94ea;
+    color: #2e94ea;
+}
+
+.course_category_2 {
+    border: 1px solid #ff8f00;
+    color: #ff8f00;
+}
+
+
+
+/* 학습 시작일, 학습 수료일 */
+.text_list_area {
+    display: flex;
+    width: 30%;
+}
+
+.course_category_list_2 {
+    display: flex;
+    width: 100%;
+    list-style: none;
+}
+
+.course_category_list_2 li {
+    font-size: 14px;
+}
+
+.course_category_list_2 li:nth-child(1) {
+    margin-right: 30px;
+}
+
+
+.tit {
+    color: #2f2f2f;
+}
+
+
+/* 리스트 - 교육정보 */
+.course_title {
+    margin: 0 0 14px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 30px;
+    color: #2f2f2f;
+    margin-bottom: 25px;
+}
+
+.current_table {
+    width: 100%;
+    border-top: 2px solid #757575;
+    border-collapse: collapse;
+    table-layout: fixed;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.current_table th, td {
+    border: 1px solid #eeeeee; /* 셀의 테두리 색상 */
+    padding: 10px;
+    text-align: center;
+}
+
+.current_table th {
+    background: #f7f7f7;
+    height: 52px;
+}
+
+.current_table td {
+    height: 60px;
+}
+
+.play_btn {
+    display: inline-block;
+    padding: 0 18px;
+    background-color: #1f8ce9;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 40px;
+    color: #ffffff;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.nonClick_btn {
+    display: inline-block;
+    padding: 0 18px;
+    background-color: #babbc1;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 40px;
+    color: #ffffff;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.red_txt {
+    font-weight: 500;
+    color: #ed4040;
+}
+
+.sub_content {
+    margin: 0;
+}
+
+
+
+

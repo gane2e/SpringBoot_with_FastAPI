@@ -1,0 +1,30 @@
+.star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 5px; /* 별들 간 간격 */
+}
+
+.star {
+    appearance: none;
+    padding: 1px;
+    font-size: 40px; /* 별 크기 */
+    cursor: pointer;
+}
+
+
+.star::after {
+    content: '☆';
+    color: hsl(60, 80%, 45%);
+    font-size: 40px;
+}
+
+.star:hover::after,
+.star:has(~ .star:hover)::after,
+.star:checked::after,
+.star:has(~ .star:checked)::after {
+    content: '★';
+}
+
+.star:hover ~ .star::after {
+    content: '☆';
+}

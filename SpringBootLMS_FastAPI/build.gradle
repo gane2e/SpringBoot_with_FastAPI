@@ -1,0 +1,89 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.0'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+
+    //타임리프
+    // https://mvnrepository.com/artifact/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
+
+    // 스프링시큐리티
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.4.0'
+
+    // 유효성체크를 위해 의존성 추가
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.4.0'
+
+    // 권한별 show/hide를 위해 의존성 추가, 6:3.1.2 가능
+    // https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity6
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.2.RELEASE'
+
+
+    /* 테스트 환경의 시큐리티 */
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
+    testImplementation 'org.springframework.security:spring-security-test:6.4.1'
+
+    /* 서로 다른 클래스의 값을 필드의 이름과 자료형이 같으면 getter,setter를 통해 값을 복사해서 객체를 반환해준다.*/
+    // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
+    implementation 'org.modelmapper:modelmapper:3.2.1'
+
+    /* JSON 객체를 자바 객체로 변환하기 위한 Gson 의존성 추가 */
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation 'com.google.code.gson:gson:2.11.0'
+
+    // 카카오로그인 구현
+    implementation 'org.springframework.security:spring-security-oauth2-client'
+    implementation 'org.springframework.security:spring-security-oauth2-jose'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+   /* spring-security-auth2-client: 클라이언트 자동 인증 설정을 위한 라이브러리
+    spring-security-oauth2-jose: JWT(Json Web Token) 관련한 권한을 안전하게 전송하기 위한 프레임워크(JWT의 암/복호화 및 일정한 기능 제공)
+    spring-boot-starter-security: Oauth2 관련 설정을 security에서 제공한다.*/
+
+    //Mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // gradle clean 시에 QClass 디렉토리 삭제
+    clean {
+        delete file('src/main/generated')
+    }
+
+
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

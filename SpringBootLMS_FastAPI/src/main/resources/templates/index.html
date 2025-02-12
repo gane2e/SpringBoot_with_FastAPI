@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/sub_layout_main}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Swiper css -->
+    <link rel="stylesheet" th:href="@{/css/main/main.css}">
+    <link rel="stylesheet" th:href="@{/css/main/mainSlide.css}">
+    <link rel="stylesheet" th:href="@{/slick/slick.css}">
+    <link rel="stylesheet" th:href="@{/slick/slick-theme.css}">
+    <script src="/slick/slick.js"></script>
+</head>
+
+<div layout:fragment="sub_cont">
+    <section id="section1">
+
+        <div class="slider-container">
+
+            <div class="slider">
+                <div class="slide" th:each="mainVisual: ${mainVisualList}">
+                    <div class="left_cont">
+                        <div>
+                            <span th:text="${mainVisual.categoryName}">1차 카테고리</span>
+                            <span> &#10095; </span>
+                            <span th:text="${mainVisual.subCategoryName}">2차 카테고리</span>
+                        </div>
+                        <div class="visual_title" th:text="${mainVisual.title}">AI시대 데이터 직군을 위한 생존 전략</div>
+                        <div class="visual_description">
+                            <img src="/img/해시태그.png" width="15px" style="display: inline">
+                            <span th:each="hashTag: ${mainVisual.hashTagFormDtoList}" class="hashTag_data">
+                                [[${hashTag.hashTagName}]]
+                            </span>
+                        </div>
+                        <div class="visual_date">
+                            <div style="margin-bottom: 10px">
+                                모집기간 : [[${mainVisual.recruitment_start_date}]] ~
+                                [[${mainVisual.recruitment_end_date}]]
+                            </div>
+                            <div>교육기간 : [[${mainVisual.course_start_date}]] ~ [[${mainVisual.course_end_date}]]</div>
+                        </div>
+                    </div>
+                    <div class="right_cont">
+                        <img th:src="${mainVisual.imgUrl}" class="slide_img">
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" id="prevBtn">&#10094;</button>
+                <button class="control-btn" id="nextBtn">&#10095;</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="section2">
+        <div class="section_title">
+            <img src="/img/우주1.png" class="title_img">
+            강의명으로 찾아보세요!
+        </div>
+
+        <div class="search_box_container">
+            <form action="/course/courses/search" method="get" id="searchForm">
+                <div class="search">
+                    <div class="search_box">
+                        <input type="text" name="keyword" placeholder="&nbsp;배우고싶은 강의명을 입력해보세요.">
+                    </div>
+                    <div>
+                        <button type="submit" class="search_btn">
+                            검색
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="search_hashTag">
+                <span class="hashTag" th:each="hashTag: ${top5Hashtags}">
+                    <a>#[[${hashTag.hashTagName}]]</a>
+                </span>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="section3">
+        <div class="section_title">
+            <img src="/img/BEST.png" class="title_img">
+            가장 많이 신청한 강의 순위!
+        </div>
+
+        <div class="slick-slider">
+
+            <div class="slick-list">
+
+                <div class="slick-slide"
+                     th:each="course, iterStat : ${top8CourseList}">
+                    <div class="list_container">
+                        <span class="rank rank-1">[[${iterStat.index +1}]]위</span>
+                        <img th:src="${course.imgUrl}" class="border-radius">
+                        <div class="category_area">
+                            <span class="category main"
+                                  th:text="${course.categoryName}">1차</span>
+                            <span class="category sub"
+                                  th:text="${course.subCategoryName}">2차</span>
+                        </div>
+                        <div class="slide_title" th:text="${course.title}">
+                            피그마(Figma)를 활용한 UI디자인 입문부터 실전까지 A to Z
+                        </div>
+                        <div class="hashTag_area">
+                            <span class="slide_hashTag"
+                                  th:each="hashTag : ${course.hashTagFormDtoList}">
+                                #[[${hashTag.hashTagName}]]
+                            </span>
+                        </div>
+                        <div class="count">
+                            <span class="count_txt bold">신청자 수 </span>
+                            <img src="/img/appCount.png" width="15px" style="display: inline">
+                            <span class="count_txt"> <span class="bold" th:text="${course.numberOfApplications}"></span> 명</span>
+                        </div>
+                        <div class="rating_area">
+                            <img src="/img/rating.png" width="15px" style="display: inline">
+                            &nbsp;[[${course.totalRating}]]
+                            ([[${course.ratingCount}]])
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="indicaotr">
+            <span class="prevArrow"><img src="/img/prev.png" class="slick_slide_img"></span>
+            <span class="nextArrow"><img src="/img/next.png" class="slick_slide_img"></span>
+        </div>
+
+    </section>
+
+
+    <script>
+
+        $('.slick-list').slick({
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            /*autoplay: true,*/
+            autoplaySpeed: 2000,
+            prevArrow: $('.prevArrow'),
+            nextArrow: $('.nextArrow'),
+        });
+        $('.slider').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            prevArrow: $('#prevBtn'),
+            nextArrow: $('#nextBtn'),
+        });
+    </script>
+    <th:block>
+        <script th:inline="javascript">
+            // 서버에서 전달된 메시지가 있을 경우 알림창을 띄웁니다.
+            var message = [[${message}]]; // Spring EL을 사용하여 message를 출력
+            if (message) {
+                alert(message); // 로그인 되었습니다. 메시지를 알림창으로 표시
+            }
+        </script>
+    </th:block>
+
+</div>
+
+</html>

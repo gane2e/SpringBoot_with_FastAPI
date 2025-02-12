@@ -1,0 +1,182 @@
+a {
+    cursor: pointer;
+}
+#section1 {
+    padding-top: 30px;
+    padding-bottom: 50px;
+    background-image: url("../../img/slide3.jpg");
+    background-size: cover; /* 이미지를 영역에 맞게 꽉 채우도록 설정 */
+    background-position: center; /* 이미지가 영역 중앙에 오도록 설정 */
+    position: relative; /* 위치를 상대적으로 설정 */
+}
+
+#section2 {
+    padding: 50px 350px 50px 330px;
+    width: 100%;
+    height: 100%;
+}
+.search_box_container {
+    background: #f5f5f5;
+    border-radius: 7px;
+    padding: 40px 80px 30px 80px;
+    border: 1px solid #e3e3e3;
+}
+.search {
+    display: flex;
+}
+.search_box {
+    width: 100%;
+}
+input {
+    width: 100%;         /* 가로 크기 265px */
+    height: 50px;         /* 세로 크기 50px */
+    border-radius: 10px;  /* 모서리 반경 10px */
+    border: none;             /* 테두리 제거 */
+    margin-bottom: 10px;
+}
+button {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+}
+.search_hashTag {
+    color: #333333;
+}
+.hashTag {
+    padding: 0 10px 0 0;
+}
+.search_btn {
+    all: unset; /* 버튼의 모든 기본 스타일 제거 */
+    width: 90%;
+    display: inline-block;
+    padding: 0 20px;
+    background-color: #02021a;
+    border-radius: 3px;
+    color: #eeeeee;
+    outline: none;
+    height: 50px;
+    margin-left: 10px;
+    text-align: center;
+}
+
+#section3 {
+    padding: 50px 350px 50px 330px;
+    width: 100%;
+    position: relative;
+    margin-bottom: 100px;
+}
+.section_title {
+    font-size: 26px;
+    font-weight: 600;
+    padding-bottom: 15px;
+}
+.title_img {
+    width: 40px;
+}
+.prevArrow {
+    position: absolute;
+    top: 200px;
+    left: 250px;
+    cursor: pointer;
+}
+.nextArrow {
+    position: absolute;
+    top: 200px;
+    right: 270px;
+    cursor: pointer;
+}
+.list_container {
+    position: relative;
+    width: 100%;
+}
+.list_container > img {
+    width: 280px;
+    height: 182px;
+    object-fit: contain;
+}
+.rank {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1;
+    padding: 0 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    display: inline-block;
+    text-align: center;
+    color:#ffffff;
+    font-size: 14px;
+    background: #00000080;
+}
+
+
+.category{
+    padding: 0 14px;
+    border-radius: 5px;
+    font-size: 15px;
+    line-height: 24px;
+    margin-right: 10px;
+}
+.main {
+    border: 1px solid #1F8CE9;
+    color: #1F8CE9;
+}
+.sub {
+    border: 1px solid #ff8f00;
+    color: #ff8f00;
+}
+.count {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 8px;
+}
+.category_area {
+    padding: 10px 0 5px 0;
+}
+.slide_title {
+    font-weight: 500;
+    width: 95%;
+    padding-bottom: 5px;
+    font-size: 18px;
+}
+.count_txt {
+    font-size: 15px;
+}
+.hashTag_area {
+    margin-bottom: 10px;
+}
+.slide_hashTag{
+    font-size: 14px;
+    color: #757575;
+}
+.bold {
+    font-weight: bold;
+}
+.slide_img {
+    width: 20px;
+    border-radius: 10px;
+}
+.slick_slide_img {
+    width: 30px;
+}
+.rating_area {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-size: 14px;
+}
+.visual_description {
+    margin-top: 10px;
+}
+.hashTag_data {
+    background: #02021a;
+    color: #a5d8ff;
+    border-radius: 10px;
+    padding: 0 10px;
+    margin-right: 10px;
+}
+.border-radius {
+    border-radius: 10px;
+}
+
+

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/sub_layout}">
+<head>
+    <link th:href="@{/css/course/courseDtl.css}" rel="stylesheet">
+    <link th:href="@{/css/member/modal.css}" rel="stylesheet">
+    <!-- 사용자 CSS 추가 -->
+
+<div layout:fragment="sub_cont">
+
+    <div class="left_cont">
+        <div class="category_area">
+            <img src="/img/mark_5251227.png" class="category_img">
+            <span class="category_title1" th:text="${course.categoryName}">1차 카테고리</span>
+            <span class="category_title2"> > </span>
+            <span class="category_title2" th:text="${course.subCategoryName}">2차 카테고리</span>
+        </div>
+        <div class="top_title_area">
+
+            <div class="top_title">
+                <span class="status" th:text="${course.recruitment_status}"></span>
+                <span class="course_title" th:text="${course.title}"></span>
+            </div>
+
+            <div class="hashtag_box">
+                <span class="hashTag" th:each="hashTag, status : ${hashTags}">
+                    #[[${hashTag.hashTagName}]]</span>
+            </div>
+            <div class="period_box">
+                <div>모집기간 : ([[${course.recruitment_status}]]) [[${#temporals.format(course.recruitment_start_date, 'yyyy-MM-dd')}]] ~ [[${#temporals.format(course.recruitment_end_date, 'yyyy-MM-dd')}]]</div>
+                <div>교육기간 : ([[${course.course_status}]]) [[${#temporals.format(course.course_start_date, 'yyyy-MM-dd')}]] ~ [[${#temporals.format(course.course_end_date, 'yyyy-MM-dd')}]]</div>
+            </div>
+        </div>
+
+
+        <ul class="list">
+            <li><a href="#education" class="list_index">
+                <span class="list_index_title" >
+                       교육 소개
+                </span>
+             </a></li>
+            <li><a href="#table-of-contents" class="list_index">
+                <span class="list_index_title">
+                       목차
+                </span>
+            </a></li>
+            <li><a href="#completion-criteria" class="list_index">
+                <span class="list_index_title">
+                       수료 기준
+                </span>
+            </a></li>
+        </ul>
+
+        <div class="title_area">
+            <div class="title_before"></div>
+            <div class="title" id="education">교육소개</div>
+        </div>
+            <div class="edu_cont_area" th:utext="${course.description}"></div>
+        <div class="title_area">
+            <div class="title_before"></div>
+            <div class="title" id="table-of-contents">목차</div>
+        </div>
+        <div class="edu_cont_area">
+            <table class="table_basics_area">
+                <tr>
+                    <th>No</th>
+                    <th>제목</th>
+                    <th>미리보기</th>
+                </tr>
+                <tr th:each="videos, status : ${video}">
+                    <td th:text="${status.index + 1}"></td>
+                    <td th:text="${videos.videoTitle}"></td>
+                    <td>
+                        <a class="openPreview" th:data-modal-id="'modal-' + ${status.index}">
+                            <i class="fas fa-play"></i> 미리보기
+                        </a>
+                    </td>
+
+                    <!-- 모달 창 -->
+                    <div th:id=" 'modal-' + ${status.index}" class="modal">
+                        <div class="modal-content">
+                            <span id="closeBtn" class="close">&times;</span>
+
+                            <div class="preview-title">미리보기 영상은 진도율이 저장되지 않으며,
+                                <br>수료증을 발급하실 수 없습니다.</div>
+                            <!-- 영상플레이어 영역-->
+                            <div class="playerArea">
+                                <video
+                                        id="videoPlayer"
+                                        class="video-js vjs-big-play-centered"
+                                        muted autoplay playsinline
+                                        width="800"
+                                        height="380"
+                                        style="border-radius: 10px;"
+                                >
+                                    <source th:src="'http://localhost:8080'+${videos.videoUrl}" type="video/mp4" />
+                                </video>
+                            </div>
+                            <ul class="modal_btn_list">
+                                <li>
+                                    <a class="modal_close_btn">닫기</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </tr>
+            </table>
+        </div>
+
+
+        <div class="title_area">
+            <div class="title_before"></div>
+            <div class="title" id="completion-criteria">수료기준</div>
+        </div>
+        <div class="edu_cont_area" th:utext="${course.completionCriteria}">
+        </div>
+    </div>
+
+
+
+        <div class="right_cont">
+            <div class="inner_box_container">
+                <div class="inner_box">
+                    <div class="inner">
+                        <img th:src="${course.imgUrl}">
+                    </div>
+
+                    <div class="m_cont">
+                        <div class="m_cont_title" th:text="${course.title}"></div>
+                        <div class="m_cont_tit">
+                            <img src="/img/check_15790612.png" class="check_img">수료기준</div>
+
+                        <div class="m_cont_txt" th:utext="${course.completionCriteria}">
+                            강의 100% 이수 및 시험 합격시 수료<br>
+                        </div>
+
+                        <div class="m_cont_tit">
+                            <img src="/img/check_15790612.png" class="check_img">난이도</div>
+
+                        <div class="m_cont_txt">
+                           중급
+                        </div>
+
+                        <div class="m_cont_tit">
+                            <img src="/img/check_15790612.png" class="check_img">평균 만족도</div>
+
+                        <div class="m_cont_txt">
+                            <img src="/img/rating.png" width="15px" style="display: inline">
+                            &nbsp;[[${course.totalRating}]]
+                            ([[${course.ratingCount}]])
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="cont_btn_list_area">
+                    <ul class="bottom_list">
+                        <li>
+                            <a class="btn"
+                               onclick="application()">
+                                <span class="first_btn">수강신청</span>
+                                <input type="hidden" id="courseId" th:value="${course.courseId}">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/course/courses" class="btn" >
+                                <span class="second_btn">목록</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    <script type="text/javascript" src="/js/player-preview.js"></script>
+    <script>
+        // 로그인 여부에 따른 신청처리로직
+        function application(){
+
+                fetch('/loginCheck', {
+                    method: 'GET',  // GET 요청
+                    headers: {
+                        'Content-Type': 'text/plain',  // 텍스트 응답을 받을 것임
+                    }
+                })
+                    .then(response => response.text())  // 응답을 텍스트 형식으로 처리
+                    .then(data => {
+                        if (data === "로그인 상태입니다.") {
+                            // 로그인 상태일 경우, POST 요청 보내기
+                            console.log(data)
+                            const courseId = document.getElementById('courseId').value;
+                            if(confirm('수강 신청하시겠습니까?')) {
+
+                                fetch('/course/courseApplication', {
+                                    method: 'POST',  // POST 요청
+                                    headers: {
+                                        'Content-Type': 'application/json',  // JSON 형식으로 데이터 전송
+                                    },
+                                    body: JSON.stringify({
+                                        courseId: courseId
+                                    })
+                                })
+                                    .then(response => response.json())  // 응답을 텍스트 형식으로 처리
+                                    .then(postData => {
+                                        alert('수강 신청이 완료되었습니다.');
+                                        const applicationId = postData.applicationId;
+                                        window.location.href = `/course/applicationSuccess?courseId=${courseId}&applicationId=${applicationId}`;  // 이동할 페이지 URL
+                                    })
+                                    .catch(error => {
+                                        console.error('POST 요청에 실패했습니다:', error);
+                                        alert('수강 신청 중 오류가 발생했습니다.');
+                                    });
+                            } else {
+                                return;
+                            }
+                        }  else {
+                            alert("로그인 후 이용 가능한 서비스입니다.")
+                        }
+                    })
+                    .catch(error => {
+                        console.error("AJAX 오류:", error);
+                    });
+        }
+    </script>
+    <script>
+        const listItems = document.querySelectorAll('.list_index');  // 모든 <a> 요소 선택
+
+        listItems.forEach(item => {
+            item.addEventListener('click', function(event) {
+                // 다른 모든 <a>에서 'selected' 클래스 제거
+                listItems.forEach(link => link.classList.remove('selected'));
+
+                // 클릭된 <a>에 'selected' 클래스 추가
+                this.classList.add('selected');
+            });
+        });
+    </script>
+    <script src="/js/openPreviews.js"></script>
+
+</div>
+
+
+</html>

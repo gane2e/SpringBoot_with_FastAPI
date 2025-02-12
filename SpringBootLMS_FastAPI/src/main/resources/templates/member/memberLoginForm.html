@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/sub_layout}">
+<head>
+<link th:href="@{/css/login.css}" rel="stylesheet">
+</head>
+
+<div layout:fragment="sub_cont">
+
+    <div class="login_container">
+
+        <div class="left_cont">
+            <!-- 로그인 -->
+            <form role="form" method="post" action="/login">
+
+                <div class="login_cont_area">
+                    <div class="title_area">
+                        <div class="title">
+                            <span class="ft_c">Learniverse</span> 홈페이지에 <br /> 방문하신것을 환영합니다.
+                        </div>
+                    </div>
+                    <div class="login_inp_area">
+                        <div class="box id">
+                            <input type="text" name="loginId" id="user_id" required
+                                   placeholder="아이디를 입력하세요." />
+                        </div>
+                        <div class="box pass">
+                            <input type="password" name="password" id="user_pw" required
+                                   placeholder="비밀번호를 입력하세요." />
+                        </div>
+                    </div>
+                    <div class="link_btn_area">
+                        <button class="btn btn-primary" style="background: #000000; border: none">로그인</button>
+                    </div>
+                    <!-- 로그인 오류 메시지를 화면에 빨간색으로 출력 -->
+                    <div th:if="${loginErrorMsg != null}" style="color: red; margin-bottom: 20px; text-align: center" >
+                        [[${loginErrorMsg}]]
+                    </div>
+                    <!-- 회원가입 / 아이디 비밀번호 찾기 -->
+                    <div class="login_etc_area">
+                        <!-- 텍스트부분 -->
+                        <ul class="list">
+                            <li>
+                                <div class="text">*회원이 아니십니까?</div>
+                            </li>
+                            <li>
+                                <div class="text">*아이디/비밀번호를 잊으셨나요?</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 회원가입 / 아이디 비밀번호 찾기 버튼 -->
+                    <div class="link_btn_area2">
+                        <a href="/members/register">회원가입</a>
+                        <a href="/id-find">아이디/비밀번호 찾기</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="right_cont">
+
+            <div class="right_title">
+                소셜로그인으로 홈페이지를<br> 간편하게 이용해보세요!
+            </div>
+            <!-- SNS 로그인 -->
+            <div class="sns_area">
+                <ul class="sns_area_list">
+                    <!-- 구글 -->
+                    <li>
+                        <a href="/oauth2/authorization/google">
+                            <img src="/img/web_light_sq_SI@3x.png">
+                        </a>
+                    </li>
+                    <!-- 카카오톡 -->
+                    <li><a href="/oauth2/authorization/kakao">
+                        <img src="/img/kakao_login_large_narrow.png">
+                    </a></li>
+                    <!-- 네이버 -->
+                    <li><a href="/oauth2/authorization/naver">
+                        <img src="/img/btnG_official.png">
+                    </a></li>
+                </ul>
+            </div>
+            <!--  -->
+        </div>
+    </div>
+
+</div>
+
+
+</html>

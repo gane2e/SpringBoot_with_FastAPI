@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://vjs.zencdn.net/8.0.4/video-js.css" rel="stylesheet">
+  <script src="https://vjs.zencdn.net/8.0.4/video.min.js"></script>
+  <style>
+    .progress-container {
+      margin-top: 20px;
+    }
+
+    .video-item {
+      margin-bottom: 10px;
+      cursor: not-allowed;
+    }
+
+    .video-item.active {
+      cursor: pointer;
+      color: blue;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: lightgray;
+      position: relative;
+      margin: 5px 0;
+    }
+
+    .progress-bar > div {
+      height: 10px;
+      background: green;
+      width: 0%;
+    }
+
+    .total-progress {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .learn-button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .learn-button.completed {
+      background-color: #555;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body>
+<h1>영상 학습 페이지</h1>
+
+
+<div id="video-container">
+  <!-- 타임리프 반복문 -->
+  <div th:each="video, indexStat : ${courseVideo}" class="video-item"
+       th:classappend="${indexStat.index == 0} ? 'active' : ''"
+       th:attr="data-index=${indexStat.index}" th:data-url="${video.videoUrl}">
+    <p th:text="${video.videoTitle}"></p>
+    <div class="progress-bar">
+      <div></div>
+    </div>
+    <p class="video-progress">진도율: 0%</p> <!-- 각 영상의 진도율 표시 -->
+    <button class="learn-button">학습하기</button> <!-- 학습하기 버튼 -->
+  </div>
+</div>
+
+<div class="total-progress">
+  <p>총 진도율: <span id="total-progress">0%</span></p> <!-- 총 진도율 표시 -->
+</div>
+
+<video id="video-player" class="video-js" controls preload="auto" width="640" height="360">
+</video>
+
+<script>
+  const videoContainer = document.getElementById('video-container');
+  const videoPlayer = videojs('video-player');
+  const progressBars = videoContainer.querySelectorAll('.progress-bar > div');
+  const videoProgressTexts = videoContainer.querySelectorAll('.video-progress');
+  const learnButtons = videoContainer.querySelectorAll('.learn-button');
+  const totalProgressText = document.getElementById('total-progress');
+  let currentVideoIndex = 0;
+  let watchedVideos = new Set(); // 사용자가 시청한 영상의 인덱스 저장
+
+  // 영상 목록 가져오기
+  const videos = Array.from(videoContainer.querySelectorAll('.video-item'));
+
+  // 전체 진도율 계산
+  function updateTotalProgress() {
+    const totalVideos = videos.length;
+    const watchedVideosCount = watchedVideos.size;
+    const totalPercentage = Math.floor((watchedVideosCount / totalVideos) * 100);
+    totalProgressText.textContent = totalPercentage + '%';
+  }
+
+  // 현재 영상의 진행 상태를 업데이트
+  function updateProgress(index, percentage) {
+    progressBars[index].style.width = percentage + '%';
+    videoProgressTexts[index].textContent = '진도율: ' + percentage + '%';
+  }
+
+  // 학습 완료 처리
+  function markVideoAsComplete(index) {
+    const button = learnButtons[index];
+    if (!watchedVideos.has(index)) {
+      watchedVideos.add(index);
+      button.textContent = '학습완료'; // 버튼 텍스트 변경
+      button.classList.add('completed'); // 버튼 스타일 변경
+    }
+  }
+
+  // 영상 종료 이벤트 핸들러
+  videoPlayer.on('ended', () => {
+    const currentProgress = progressBars[currentVideoIndex];
+
+    // 현재 영상 100%로 업데이트
+    currentProgress.style.width = '100%';
+    videoProgressTexts[currentVideoIndex].textContent = '진도율: 100%';
+
+    // 학습완료 처리
+    markVideoAsComplete(currentVideoIndex);
+
+    // 총 진도율 업데이트
+    updateTotalProgress();
+
+    if (currentVideoIndex < videos.length - 1) {
+      // 다음 영상 활성화
+      videos[currentVideoIndex].classList.remove('active');
+      videos[++currentVideoIndex].classList.add('active');
+
+      // 다음 영상으로 이동
+      const nextVideoUrl = videos[currentVideoIndex].dataset.url;
+      videoPlayer.src({ src: nextVideoUrl, type: 'video/mp4' });
+      videoPlayer.pause();
+      alert('다음 영상을 재생할 준비가 완료되었습니다!');
+    } else {
+      alert('모든 영상 학습이 완료되었습니다.');
+      videoPlayer.pause();
+    }
+  });
+
+  // 영상 시간 업데이트 이벤트
+  videoPlayer.on('timeupdate', () => {
+    const percentage = Math.floor((videoPlayer.currentTime() / videoPlayer.duration()) * 100);
+    updateProgress(currentVideoIndex, percentage);
+  });
+
+  // 클릭 이벤트 추가 (순차적 시청 방지)
+  videos.forEach((video, index) => {
+    const button = learnButtons[index];
+
+    // 학습하기 버튼 클릭 시
+    button.addEventListener('click', () => {
+      if (video.classList.contains('active') && !watchedVideos.has(index)) {
+        const videoUrl = video.dataset.url;
+        videoPlayer.src({ src: videoUrl, type: 'video/mp4' });
+        videoPlayer.play();
+      } else if (watchedVideos.has(index)) {
+        alert('이미 학습한 영상입니다. 진도율은 변경되지 않습니다.');
+      } else {
+        alert('이전 영상을 모두 학습한 후에 클릭할 수 있습니다.');
+      }
+    });
+  });
+
+  // 첫 번째 영상 초기화
+  if (videos.length > 0) {
+    const firstVideoUrl = videos[0].dataset.url;
+    videoPlayer.src({ src: firstVideoUrl, type: 'video/mp4' });
+  }
+</script>
+</body>
+</html>

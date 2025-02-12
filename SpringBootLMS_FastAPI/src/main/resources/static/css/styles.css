@@ -1,0 +1,59 @@
+/* 기본 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 전체 페이지 스타일 */
+body, html {
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* 풀페이지 컨테이너 */
+.fullpage {
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* 각 섹션 스타일 */
+.section {
+    height: 100vh; /* 화면 전체를 차지 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #f0f0f0; /* 기본 배경색 */
+    position: relative;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* 각 섹션에 대한 고유 배경 색상 (원하는 대로 수정 가능) */
+#section1 {
+    background-color: #ffcccb;
+}
+
+#section2 {
+    background-color: #add8e6;
+}
+
+#section3 {
+    background-color: #98fb98;
+}
+
+/* 콘텐츠 스타일 */
+.content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.content p {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* 스크롤 바 없애기 */
+body {
+    overflow: hidden;
+}

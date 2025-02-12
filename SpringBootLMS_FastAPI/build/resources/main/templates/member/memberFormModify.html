@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/sub_layout}">
+<head>
+    <link th:href="@{/css/member/register.css}" rel="stylesheet">
+    <!-- 사용자 CSS 추가 -->
+    <th:block layout:fragment="css">
+        <style>
+            .fieldError {
+                color: #bd2130;
+            }
+        </style>
+    </th:block>
+
+</head>
+
+<div layout:fragment="sub_cont">
+
+    <!-- 회원가입 -->
+    <form role="form" method="post" action="/members/new"
+          th:object="${member}">
+        <div class="title_area">
+            <div class="title_before"></div>
+            <div class="title">회원정보 수정</div>
+            <div class="description">
+                <span>*</span> 표시는 필수 입력사항입니다.
+            </div>
+        </div>
+
+        <!-- 정보입력 테이블 -->
+        <table class="table_area">
+            <tr>
+                <th>아이디</th>
+                <td th:text="*{loginId}"></td>
+            </tr>
+            <tr>
+                <th><span class="red_txt">*</span>  비밀번호</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_pwd">
+                            <input type="password" id="inp_pwd" name="password" class="inp_pwd"
+                                   vali-text="비밀번호를 입력해주세요."
+                                   th:field="*{password}">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <!-- 비밀번호 확인 -->
+            <tr>
+                <th><span class="red_txt">*</span>  비밀번호 확인</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_pwd">
+                            <input type="password" id="inp_pwdCf" name="passwordConfirm" class="inp_pwdCf" vali-text="비밀번호를 한번 더 입력해주세요.">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <!-- 성명 -->
+            <tr>
+                <th><span class="red_txt">*</span>  성명</th>
+                <td th:text="*{name}"></td>
+            </tr>
+            <!-- 생년월일 -->
+            <tr>
+                <th>생년월일</th>
+                <td th:text="*{birthdate}"></td>
+            </tr>
+            <!-- 성별 -->
+            <tr>
+                <th>성별</th>
+                <td th:text="*{gender}"></td>
+            </tr>
+            <!-- 휴대폰 번호 -->
+            <tr>
+                <th><span class="red_txt">*</span> 휴대폰 번호</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_num">
+                            <input type="text" id="inp_num" name="mobileNumber" class="inp_num"
+                                   th:field="*{mobileNumber}">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <!-- 주소 -->
+            <tr>
+                <th><span class="red_txt">*</span> 주소</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_addr">
+                            <input type="text" id="inp_addr" name="address" class="inp_addr"
+                                   th:field="*{address}">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <!-- 이메일 -->
+            <tr>
+                <th><span class="red_txt">*</span> 이메일</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_addr">
+                            <input type="email" id="inp_email" name="email" class="inp_email"
+                                   th:field="*{email}">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <ul class="submit_ul">
+            <li>
+                <button type="reset" class="prev_btn">취소하기</button>
+            </li>
+            <li>
+                <button type="submit" class="submit_btn">회원정보 수정</button>
+            </li>
+        </ul>
+
+    </form>
+    <!--  -->
+</div>
+
+</html>

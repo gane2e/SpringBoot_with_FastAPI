@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+    <style>
+        body {
+            font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+        }
+    </style>
+</head>
+<body>
+<div
+        style="margin:0px; width:40%;
+        background-color:#ffffff; padding:0;">
+
+    <div class="content_area"
+         style="margin-left: 20px; padding: 35px; border: 1px solid #333333" >
+
+        <div class="txt">
+            안녕하세요,
+            [Learniverse]입니다. <br><br>
+
+            요청하신 인증번호는 다음과 같습니다: <br><br>
+
+            인증번호: <span style="color: red; font-size: 22px">
+            [[${certificationNumber}]] </span>
+            <br><br>
+
+            본 인증번호는 3분 동안 유효하며, 만료되면 다시 요청하셔야 합니다. <br>
+            이메일을 통해 발송된 인증번호는 본인 확인을 위한 중요한 정보이므로 타인과 공유하지 않도록 주의해 주세요. <br><br>
+
+            감사합니다.
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+</html>

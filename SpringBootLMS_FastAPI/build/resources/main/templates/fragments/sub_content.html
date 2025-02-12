@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="sub_content">
+
+    <div class="sub_title">
+        <div class="sub_title_title"
+             th:text="${pageTitle}">서브탑</div>
+            <img src="/img/인쇄.png" onclick="print()">
+    </div>
+</div>

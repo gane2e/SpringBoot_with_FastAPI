@@ -1,0 +1,29 @@
+.tabs {
+    display: flex;
+    width: 100%;
+}
+
+/* 각 탭 스타일 */
+.tab {
+    width: 50%;
+    text-align: center;
+    padding: 20px;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    font-size: 18px;
+}
+.tab:nth-child(1) {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+.tab:nth-child(2) {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+/* 클릭된 탭의 강조 상태 */
+.active-tab {
+    background-color:  #1f8ce9;
+    color: white;
+}

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+  <link
+          href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
+          rel="stylesheet" />
+  <link th:href="@{/css/admin/admin-style.css}" rel="stylesheet">
+  <link th:href="@{/css/admin/registerProduct.css}" rel="stylesheet">
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+          crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="sb-nav-fixed">
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+  <!-- Navbar Brand-->
+  <a class="navbar-brand ps-3" href="#">관리자 페이지</a>
+  <!-- Sidebar Toggle-->
+  <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+          id="sidebarToggle" href="#!">
+    <i class="fas fa-bars"></i>
+  </button>
+  <!-- Navbar Search-->
+  <form
+          class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+    <div class="input-group">
+      <input class="form-control" type="text" placeholder="Search for..."
+             aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+      <button class="btn btn-primary" id="btnNavbarSearch" type="button">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  </form>
+  <!-- Navbar-->
+  <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+    <li class="nav-item dropdown"><a
+            class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
+            role="button" data-bs-toggle="dropdown" aria-expanded="false"><i
+            class="fas fa-user fa-fw"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" href="/admin/logout">Logout</a></li>
+      </ul></li>
+  </ul>
+</nav>
+<div id="layoutSidenav">
+  <div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark"
+         id="sidenavAccordion">
+      <div class="sb-sidenav-menu">
+        <div class="nav">
+          <div class="sb-sidenav-menu-heading">Interface</div>
+          <a class="nav-link" href="/admin/courseList">
+            <div class="sb-nav-link-icon">
+              <i class="fas fa-chart-area"></i>
+            </div> 교육과정 관리
+          </a>
+          <a class="nav-link" href="/admin/videoList">
+            <div class="sb-nav-link-icon">
+              <i class="fas fa-chart-area"></i>
+            </div> 교육영상 관리
+          </a>
+          <a class="nav-link" href="/admin/questionList">
+            <div class="sb-nav-link-icon">
+              <i class="fas fa-chart-area"></i>
+            </div> 시험문제 관리
+          </a>
+          <a class="nav-link" href="/admin/PhoneApplicationdetails">
+            <div class="sb-nav-link-icon">
+              <i class="fas fa-chart-area"></i>
+            </div> 교육 카테고리 관리
+          </a>
+          <div class="sb-sidenav-menu-heading">Addons</div>
+          <a class="nav-link" href="/admin/studentCourseList">
+            <div class="sb-nav-link-icon">
+              <i class="fas fa-chart-area"></i>
+            </div> 교육 수강생 관리
+          </a> <a class="nav-link" href="/admin/memberList">
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-table"></i>
+          </div> 회원관리
+        </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+
+
+  <div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid px-4">
+        <h1 class="mt-4">교육과정 등록</h1>
+        <div class="card mb-4">
+          <div class="card-header">
+            <i class="fas fa-table me-1"></i> 교육과정 등록
+          </div>
+          <div class="card-body">
+
+            <div class="product-form-container">
+              <form id="courseForm" action="/admin/newCourse" method="post" enctype="multipart/form-data" th:object="${CourseFormDto}">
+
+                <div class="form-group">
+                  <label for="lable_1">교육과정명</label>
+                  <input type="text"
+                         id="lable_1" name="" required
+                         placeholder="교육과정명을 입력하세요."
+                         th:field="*{title}">
+                </div>
+
+                <div class="form-group">
+                  <label for="categorySelect">교육 카테고리(1차)</label>
+                  <select id="categorySelect" onchange="loadSubCategories()">
+                    <option value="">카테고리를 선택하세요.</option>
+                    <th:block th:each="category : ${categories}">
+                      <option th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+                    </th:block>
+                  </select>
+
+                </div>
+
+                <div class="form-group">
+                  <label for="subCategorySelect">교육 카테고리(2차)</label>
+                  <select id="subCategorySelect">
+                    <option value="">1차 카테고리를 선택하세요.</option>
+                    <input type="hidden" id="subCategoryId" name="subCategoryId" />
+                  </select>
+                </div>
+
+                <!-- 교육영상 추가 영역 -->
+                <div class="form-group">
+                  <label for="videoTable">교육영상 선택
+                    <button class="btn" style="background:#0d6efd; color: #ffffff"
+                            id="addVideoRowButton">영상 추가</button>
+                  </label>
+                  <!-- 교육영상 선택 테이블 -->
+                  <div id="videoTableView" style="display: none">
+                    <table id="videoTable" class="table-active">
+                      <thead>
+                      <tr>
+                        <th>순서</th>
+                        <th>영상제목</th>
+                        <th>제거</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <!-- 교육영상 SELECT 비동기처리-->
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- 선택한 교육영상 값 json으로 저장 -->
+                  <input type="hidden" id="videoData" name="videoData" value="" />
+                </div>
+
+                <div class="form-group">
+                  <label for="recruitmentStatusSelect">모집상태</label>
+                  <select id="recruitmentStatusSelect" th:field="*{recruitment_status}">
+                    <option value="상시모집">상시모집</option>
+                    <option value="모집예정">모집예정</option>
+                    <option value="모집중">모집중</option>
+                    <option value="모집종료">모집종료</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="recruitment_start_date">모집기간(시작일)</label>
+                  <input type="date"
+                         id="recruitment_start_date" name="recruitment_start_date"
+                         th:field="*{recruitment_start_date}" required >
+                </div>
+                <div class="form-group">
+                  <label for="recruitment_end_date">모집기간(종료일)</label>
+                  <input type="date"
+                         id="recruitment_end_date" name="recruitment_end_date"
+                         th:field="*{recruitment_end_date}" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="courseStatusSelect">교육상태</label>
+                  <select id="courseStatusSelect" th:field="*{course_status}">
+                    <option value="상시교육">상시교육</option>
+                    <option value="교육예정">교육예정</option>
+                    <option value="교육중">교육중</option>
+                    <option value="교육종료">교육종료</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="course_start_date">교육기간(시작일)</label>
+                  <input type="date"
+                         id="course_start_date" name="course_start_date"
+                         th:field="*{course_start_date}" required>
+                </div>
+                <div class="form-group">
+                  <label for="course_end_date">교육기간(종료일)</label>
+                  <input type="date"
+                         id="course_end_date" name="course_end_date"
+                         th:field="*{course_end_date}" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="lable_2">교육소개</label>
+                  <textarea id="lable_2" th:field="*{description}" name="" maxlength="500" rows="10" cols="30"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="lable">수료기준</label>
+                  <textarea id="lable" th:field="*{completionCriteria}" name="" maxlength="500" rows="3" cols="30"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="hashTag">해시태그</label>
+                  <input type="text"
+                         id="hashTag" required
+                         placeholder="해시태그는 , 단위로 입력해주세요. (예: 해시태그1, 해시태그2).">
+                </div>
+
+                <!-- 썸네일  -->
+                <div class="form-group">
+                  <label for="file">썸네일 첨부</label> <input
+                        type="file" id="file" name="imgFile"
+                        class="form-control">
+                </div>
+
+                <button type="submit" class="btn"
+                        style="background-color: #212529; color: #ffffff;"
+                        id="submitButton">등록하기</button>
+              </form>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+      <div class="container-fluid px-4">
+        <div
+                class="d-flex align-items-center justify-content-between small">
+          <div class="text-muted">Copyright &copy; Your Website 2023</div>
+          <div>
+            <a href="#">Privacy Policy</a> &middot; <a href="#">Terms
+            &amp; Conditions</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="/resources/js/scripts.js"></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+<script src="/resources/js/datatables-simple-demo.js"></script>
+
+
+
+<script>
+
+  // 선택된 비디오 정보를 저장할 객체
+  let selectedVideoData = {};
+
+  // 카테고리 스크립트 START
+  function loadSubCategories() {
+    const categoryId = document.getElementById("categorySelect").value;
+    console.log("categoryId: " + categoryId);
+
+    // AJAX 요청
+    $.ajax({
+      url: '/subcategories?categoryId=' + categoryId, // 요청 URL
+      type: 'GET', // 요청 방식
+      dataType: 'json', // 기대하는 데이터 타입
+      success: function(subCategories) {
+        console.log("Number of subCategories:", subCategories.length);
+        const subCategorySelect = document.getElementById("subCategorySelect");
+        subCategorySelect.innerHTML = '<option value="">카테고리를 선택하세요.</option>'; // 초기화
+
+        // 서브 카테고리 옵션 추가
+        subCategories.forEach(subCategory => {
+          const option = document.createElement("option");
+          option.value = subCategory.subCategoryId;
+          option.text = subCategory.subCategoryName;
+          subCategorySelect.add(option);
+        });
+
+        //서브카테고리 히든값 할당 추가
+        subCategorySelect.addEventListener('change', function() {
+          document.getElementById('subCategoryId').value = this.value; //hidden input에 값 설정
+        });
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error("Error fetching subcategories:", textStatus, errorThrown); // 오류 로그
+      }
+    });
+  }
+  <!-- 카테고리 스크립트 END -->
+
+  // 서브 카테고리에 해당하는 교육영상 찾기 START
+  document.getElementById("subCategorySelect").addEventListener("change", function() {
+    const subCategoryId = this.value; // 선택된 서브카테고리 ID
+    if (subCategoryId) {
+      loadEducationalVideos(subCategoryId); // 교육 영상 불러오기 함수 호출
+    } else {
+      console.log("No subcategory selected."); // 기본 옵션 선택 시 처리
+    }
+  });
+  // 서브 카테고리에 해당하는 교육영상 찾기 END
+
+
+  // 영상 추가 버튼 클릭 시 행 추가되는 함수 START
+  document.getElementById("addVideoRowButton").addEventListener("click", function(e) {
+    e.preventDefault(); // 버튼 클릭 시 기본 동작 방지
+
+    // 선택된 서브카테고리 ID 가져오기
+    const subCategoryId = document.getElementById("subCategorySelect").value;
+    if (!subCategoryId) {
+      alert('교육 카테고리를 모두 선택해주세요.')
+      return;
+    }
+    // videoTableView의 display 속성 변경
+    const videoTableView = document.getElementById("videoTableView");
+    videoTableView.style.display = "block"; // display를 block으로 설정
+
+    const tableBody = document.querySelector("#videoTable tbody"); // 테이블 본문 선택
+    const newRow = document.createElement("tr"); // 새로운 행 생성
+
+    // 현재 테이블 행 수로 번호 지정
+    const rowCount = tableBody.rows.length + 1;
+
+    // 새로운 행의 내용 구성
+    newRow.innerHTML = `
+<tr>
+      <td>${rowCount}</td>
+      <td>
+      <select id="videoSelect${rowCount}">
+        <option value="">교육 영상을 선택하세요.</option>
+      </select>
+      </td>
+      <td>
+        <button class="removeRowButton">제거</button>
+      </td>
+  </tr>
+  `;
+    // 테이블 본문에 새 행 추가
+    tableBody.appendChild(newRow);
+
+    // 삭제 버튼 이벤트 처리
+    newRow.querySelector(".removeRowButton").addEventListener("click", function() {
+      newRow.remove(); // 행 삭제
+    });
+
+    // 새로 추가된 셀렉트 박스 가져오기
+    const newSelect = document.getElementById(`videoSelect${rowCount}`);
+    loadEducationalVideos(subCategoryId, newSelect);
+  });
+
+
+  // 교육 영상 불러오기 함수 START
+  function loadEducationalVideos(subCategoryId, targetSelect) {
+
+
+
+    /* targetSelect = [영상추가] 버튼 클릭하여 생성된 셀렉트 */
+    console.log("loadEducationalVideos : " + subCategoryId)
+
+
+    // AJAX 요청
+    $.ajax({
+      url: '/admin/getVideosBySubCategory?subCategoryId=' + subCategoryId, // 요청 URL
+      type: 'GET', // 요청 방식
+      dataType: 'json', // 기대하는 데이터 타입
+      success: function(videos) {
+        console.log("Number of videos:", videos.length);
+        const videoSelect = document.getElementById("videoSelect");
+        targetSelect.innerHTML = '<option value="">교육영상을 선택하세요.</option>'; // 초기화
+
+        // 교육 영상 옵션 추가
+        videos.forEach(video => {
+          const option = document.createElement("option");
+          option.value = video.videoId;
+          option.text = video.title;
+          targetSelect.add(option);
+        });
+
+      // 사용자가 선택한 영상의 videoId 값을 가져오는 방법
+        // "change" 이벤트 리스너를 추가하여 선택이 변경될 때마다 videoId를 구하기
+        targetSelect.addEventListener('change', function() {
+
+          const selectedVideoId = targetSelect.value; // 선택된 option의 value (즉, videoId)
+          const rowCountExtracted = targetSelect.id.replace('videoSelect', ''); // targetSelect의 id 속성에서 rowCount 값 추출
+
+          // selectedVideoData에서 해당 rowCount가 없으면 초기화 (한 번만 초기화)
+          if (!selectedVideoData[rowCountExtracted]) {
+            selectedVideoData[rowCountExtracted] = {};  // 빈 객체로 초기화
+          }
+
+          // videoId와 rowCount 값을 저장 (덮어쓰지 않고 누적)
+          selectedVideoData[rowCountExtracted].videoId = selectedVideoId;
+          selectedVideoData[rowCountExtracted].rowCount = rowCountExtracted;
+
+          console.log("선택된 videoId: ", selectedVideoId);
+          console.log("추출된 rowCount:", rowCountExtracted);
+          console.log("저장된 selectedVideoData:", selectedVideoData);
+          console.log("selectedVideoData의 길이 (저장된 항목 수):",  Object.keys(selectedVideoData).length);
+          console.log("selectedVideoData 내용 (JSON 문자열):", JSON.stringify(selectedVideoData, null, 2));
+
+        });
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error("Error fetching educational videos:", textStatus, errorThrown); // 오류 로그
+      }
+    });
+  }
+  // 교육 영상 불러오기 함수 END
+
+  document.getElementById('courseForm').addEventListener('submit', function(event) {
+    // 기본 submit 동작을 막는다.
+    event.preventDefault();
+
+    // 해시태그를 콤마로 구분하여 리스트로 변환
+    const hashTagInput = document.getElementById('hashTag');  // 해시태그 입력 필드
+    const hashTagValue = hashTagInput.value;  // 사용자가 입력한 값
+    const hashTags = hashTagValue.split(',').map(tag => tag.trim());  // 콤마로 분리하고 앞뒤 공백 제거
+
+    // 데이터를 담을 객체 (selectedVideoData는 이미 정의된 상태로 가정)
+    const formData = {
+      selectedVideoData: selectedVideoData,  // selectedVideoData를 JSON 문자열로 변환하지 않고 객체 그대로 전송
+      hashTagFormDtoList: hashTags
+    };
+
+    console.log(formData)
+    console.log(JSON.stringify(formData))
+
+    // AJAX 요청 보내기
+    $.ajax({
+      url: '/admin/newCourse/addData', // 데이터를 보낼 서버의 URL
+      type: 'POST', // 요청 방식
+      contentType: 'application/json', // Content-Type을 JSON으로 설정
+      data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환하여 전송
+      success: function(response) {
+        console.log("서버 응답:", response);
+
+        // AJAX 요청이 성공하면 form을 실제로 제출한다
+        // 폼 데이터를 제출하려면 submit() 메서드를 호출
+        document.getElementById('courseForm').submit();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error("Error sending data:", textStatus, errorThrown); // 오류 로그
+      }
+    });
+  });
+
+
+
+
+</script>
+
+<!-- 썸네일 파일처리 - 사용자 스크립트 추가 -->
+<script th:inline="javascript">
+  $(document).ready(function () {
+    bindDomEvent();
+  });
+
+  function bindDomEvent() {
+    $("#custom-file-input").on("change", function () {
+      var fileName = $(this).val().split("\\").pop();  //영상 파일명
+      var fileExt = fileName.substring(fileName.lastIndexOf(".") + 1); // 확장자 추출
+      fileExt = fileExt.toLowerCase(); //소문자 변환
+
+      console.log("fileName : " + fileName);
+
+      if (fileExt != "jpg" && fileExt != "png" && fileExt != "jpeg" && fileExt != "gif") {
+        alert("이미지 파일만 등록이 가능합니다.");
+        return;
+      }
+
+      $(this).siblings(".custom-file-label").html(fileName);
+    });
+  }
+  <!-- 썸네일 파일처리 - 사용자 스크립트 추가 END -->
+
+
+</script>
+</body>
+</html>

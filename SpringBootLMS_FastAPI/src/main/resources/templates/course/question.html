@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/sub_layout_question}">
+<head>
+    <link th:href="@{/css/course/question.css}" rel="stylesheet">
+    <title>시험보기</title>
+</head>
+
+<div layout:fragment="sub_cont">
+
+    <div class="inner">
+        <img src="/img/mark_5251227.png" class="category_img">
+        <span class="menu_title">시험보기</span>
+
+        <div class="title" th:text="${courseTitle}"></div>
+    </div>
+
+
+    <div class="question_container">
+
+        <form th:action="@{'/question/grading/' + ${studentTestId} + '/' + ${studentCourseId} + '/' + ${courseTitle} + '/' + ${subCategoryId}}"
+              method="post" onsubmit="confirmSubmit(event)">
+
+            <ul class="list">
+
+                <!-- 한 문제 -->
+                <li th:each="question, iterStat : ${questions}">
+
+                    <div class="inner_box">
+                        <div class="tit">
+                            <img src="/img/Question_Q.png">
+                            <span class="question">[[${iterStat.index+1}]]번 문제</span>
+                        </div>
+
+                    </div>
+                    <div class="question_area" th:text="${question.questionTitle}"></div>
+
+                    <div class="table_inner">
+                        <table class="question_table">
+                            <colgroup>
+                                <col style="width: 79px;">
+                                <col style="width: auto;">
+                                <col style="width: 79px;">
+                            </colgroup>
+                            <tbody>
+                            <!---->
+                                <tr>
+                                    <th> <div class="answer">1</div></th>
+                                    <td>
+                                        <label th:for="'question_' + ${iterStat.index} + '_option1'">
+                                            [[${question.option1}]]
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="answer">
+                                            <input type="radio"
+                                                   th:name="${question.questionId}"
+                                                   th:id="'question_' + ${iterStat.index} + '_option1'"
+                                                   value="1">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!---->
+                                <tr>
+                                    <th> <div class="answer">2</div></th>
+                                    <td>
+                                        <label th:for="'question_' + ${iterStat.index} + '_option2'">
+                                            [[${question.option2}]]
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="answer">
+                                            <input
+                                                    type="radio"
+                                                    th:name="${question.questionId}"
+                                                    th:id="'question_' + ${iterStat.index} + '_option2'"
+                                                    value="2">
+                                        </div>
+                                    </td>
+                                </tr>
+                            <!---->
+                            <tr>
+                                <th> <div class="answer">3</div></th>
+                                <td>
+                                    <label th:for="'question_' + ${iterStat.index} + '_option3'">
+                                        [[${question.option3}]]
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="answer">
+                                        <input
+                                                type="radio"
+                                                th:name="${question.questionId}"
+                                                th:id="'question_' + ${iterStat.index} + '_option3'"
+                                                value="3">
+                                    </div>
+                                </td>
+                            </tr>
+                            <!---->
+                            <tr>
+                                <th> <div class="answer">4</div></th>
+                                <td>
+                                    <label th:for="'question_' + ${iterStat.index} + '_option4'">
+                                        [[${question.option4}]]
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="answer">
+                                        <input
+                                                type="radio"
+                                                th:name="${question.questionId}"
+                                                th:id="'question_' + ${iterStat.index} + '_option4'"
+                                                value="4">
+                                    </div>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+                <!-- 한 문제 끝 -->
+            </ul>
+            <ul class="btn_list">
+                <button type="submit" class="btn1">제출하기</button>
+                <a class="btn2" onclick="confirmAlert()" >나가기</a>
+            </ul>
+        </form>
+    </div>
+
+    <script src="/js/question.js"></script>
+</div>
+
+</html>

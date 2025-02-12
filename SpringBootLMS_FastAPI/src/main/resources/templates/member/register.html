@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/sub_layout}">
+<head>
+    <link th:href="@{/css/member/register.css}" rel="stylesheet">
+    <script>
+        function checkloginId(){
+
+            const loginId = document.getElementById('loginId').value;
+            if(loginId === '') {
+                alert('아이디를 입력해주세요.')
+                return
+            }
+            fetch('/members/checkloginId', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    loginId: loginId
+                })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    if(data === 'false') {
+                        alert('이미 가입된 아이디입니다.');
+                        loginId.textContent = '';
+                    } else if (data === 'true'){
+                        alert('사용 가능한 아이디입니다.')
+                    } else
+                        alert('오류가 발생했습니다.')
+
+                })
+        }
+        // 전화번호 하이픈 자동 포맷 함수
+        function formatPhoneNumber(input) {
+            let phoneNumber = input.value.replace(/[^\d]/g, ''); // 숫자만 남기고 나머지 문자 제거
+
+            // 전화번호 길이에 따라 하이픈 추가
+            if (phoneNumber.length < 4) {
+                input.value = phoneNumber;
+            } else if (phoneNumber.length < 7) {
+                input.value = phoneNumber.slice(0, 3) + '-' + phoneNumber.slice(3);
+            } else if (phoneNumber.length < 11) {
+                input.value = phoneNumber.slice(0, 3) + '-'
+                    + phoneNumber.slice(3, 6) + '-' + phoneNumber.slice(6);
+            } else {
+                input.value = phoneNumber.slice(0, 3) + '-'
+                    + phoneNumber.slice(3, 7) + '-' + phoneNumber.slice(7, 11);
+            }
+        }
+
+
+        //유효성검사+폼제출
+        function signupFormSubmit() {
+            // 폼 요소 가져오기
+            const loginId = document.getElementById('loginId').value.trim();
+            const email = document.getElementById('inp_email').value.trim();
+            const name = document.getElementById('inp_name').value.trim();
+            const password = document.getElementById('inp_pwd').value.trim();
+            const passwordConfirm = document.getElementById('inp_pwdCf').value
+                .trim();
+            const addr = document.getElementById('inp_addr').value.trim();
+
+            // 유효성 검사
+            if (loginId === '') {
+                alert('아이디를 입력하세요.');
+                return;
+            }
+            if (password.length < 8) {
+                alert('비밀번호는 최소 8자 이상이어야 합니다.');
+                return;
+            }
+            if (password !== passwordConfirm) {
+                alert("비밀번호가 일치하지 않습니다.");
+                document.getElementById('inp_pwd').value = ''; // 비밀번호 입력란 값 비우기
+                document.getElementById('inp_pwdCf').value = ''; // 비밀번호 확인란 값 비우기
+                return;
+            }
+            if (!validateEmail(email)) {
+                alert('유효한 이메일 주소를 입력하세요.');
+                return;
+            }
+            if (name === '') {
+                alert('성명을 입력하세요.');
+                return;
+            }
+            if (addr === '') {
+                alert('주소를 입력하세요.');
+                return;
+            }
+
+            // 유효성 검사를 모두 통과하면 폼 제출
+            alert('회원가입이 완료되었습니다.');
+            document.getElementById('signupForm').submit(); // 폼을 수동으로 제출
+        }
+
+        function validateEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+
+    </script>
+</head>
+
+<div layout:fragment="sub_cont">
+
+    <!-- 회원가입 -->
+    <form role="form" method="post" action="/members/new"
+          th:object="${member}" id="signupForm">
+        <div class="title_area">
+            <div class="title_before"></div>
+            <div class="title">회원정보 입력</div>
+            <div class="description">
+                <span>*</span> 표시는 필수 입력사항입니다.
+            </div>
+        </div>
+
+        <!-- 정보입력 테이블 -->
+        <table class="table_area">
+            <tr>
+                <th><span class="red_txt">*</span>  아이디</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="loginId">
+                            <input type="text" id="loginId" name="loginId" class="inp_txt"
+                                   vali-text="아이디를 입력해주세요."
+                                   th:field="*{loginId}">
+                        </label>
+                        <button type="button" class="check_id_btn" onclick="checkloginId()">중복확인</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th><span class="red_txt">*</span>  비밀번호</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_pwd">
+                            <input type="password" id="inp_pwd" name="password" class="inp_pwd"
+                                   vali-text="비밀번호를 입력해주세요."
+                                   th:field="*{password}">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <!-- 비밀번호 확인 -->
+            <tr>
+                <th><span class="red_txt">*</span>  비밀번호 확인</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_pwd">
+                            <input type="password" id="inp_pwdCf" name="passwordConfirm" class="inp_pwdCf" vali-text="비밀번호를 한번 더 입력해주세요.">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <!-- 성명 -->
+            <tr>
+                <th><span class="red_txt">*</span>  성명</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_name">
+                            <input type="text" id="inp_name" name="name" class="inp_name"
+                                   vali-text="성명을 입력해주세요."
+                                   th:field="*{name}">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <!-- 생년월일 -->
+            <tr>
+                <th><span class="red_txt">*</span> 생년월일</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_date">
+                            <input type="date" id="inp_date" name="birthdate" class="inp_date"
+                                   vali-text="생년월일을 선택해주세요."
+                                   th:field="*{birthdate}">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <!-- 성별 -->
+            <tr>
+                <th><span class="red_txt">*</span>  성별</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_gender_m">
+                            <input type="radio" id="inp_gender_m" name="gender" class="inp_gender_m"
+                                    value="남성"
+                                   th:field="*{gender}"> 남성
+                        </label>
+                        <label for="inp_gender_w">
+                            <input type="radio" id="inp_gender_w" name="gender" class="inp_gender_w"
+                                   value="여성"
+                                   th:field="*{gender}"> 여성
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <!-- 휴대폰 번호 -->
+            <tr>
+                <th><span class="red_txt">*</span> 휴대폰 번호</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_num">
+                            <input type="text" id="inp_num" name="mobileNumber" class="inp_num"
+                                   th:field="*{mobileNumber}"
+                                   oninput="formatPhoneNumber(this)">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <!-- 주소 -->
+            <tr>
+                <th><span class="red_txt">*</span> 주소</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_addr">
+                            <input type="text" id="inp_addr" name="address" class="inp_addr"
+                                   th:field="*{address}">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <!-- 이메일 -->
+            <tr>
+                <th><span class="red_txt">*</span> 이메일</th>
+                <td>
+                    <div class="inp_txt_area">
+                        <label for="inp_addr">
+                            <input type="email" id="inp_email" name="email" class="inp_email"
+                                   th:field="*{email}">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <ul class="submit_ul">
+            <li>
+                <button type="button" class="prev_btn" onclick="window.location.href='/'">취소하기</button>
+            </li>
+            <li>
+                <button type="button" class="submit_btn" onclick="signupFormSubmit()">가입하기</button>
+            </li>
+        </ul>
+
+    </form>
+    <!--  -->
+</div>
+</html>

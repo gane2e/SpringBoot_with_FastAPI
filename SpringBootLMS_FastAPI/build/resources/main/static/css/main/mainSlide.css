@@ -1,0 +1,89 @@
+
+.slider-container {
+    width: 100%;
+    overflow: hidden; /* 슬라이드가 밖으로 넘어가지 않도록 함 */
+    background-size: cover;
+}
+
+.slider {
+    width: 100%;
+    display: flex; /* 슬라이드 요소를 가로로 배치 */
+    transition: transform 0.5s ease; /* 슬라이드 전환 효과 */
+}
+
+.slide {
+    position: relative;
+    min-width: 100%; /* 각 슬라이드가 한 화면을 차지하도록 설정 */
+    box-sizing: border-box;
+    /*background-color: white;*/
+    margin-right: 10px;
+    display: flex;
+    padding: 55px 350px;
+}
+.left_cont, .right_cont {
+    display: inline-block;
+}
+.left_cont {
+    width: 60%;
+    color: #ffffff;
+}
+.right_cont{
+    position: absolute;
+    top: 55px;
+    right: 180px;
+    display: flex;
+    justify-content: center;
+    width: 40%;
+}
+.visual_title {
+    font-size: 36px;
+    font-weight: 600;
+    color: #ffffff;
+}
+.visual_description {
+    margin-bottom: 40px;
+}
+.visual_date {
+    margin-top: 10px;
+    color: #ffffff;
+}
+
+.slide h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.slide p {
+    font-size: 16px;
+    color: #555;
+}
+
+.controls {
+    display: flex;
+    justify-content: start;
+    transform: translateY(-70%);
+}
+
+.control-btn {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 30px; height: 30px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: -webkit-center;
+}
+.control-btn:nth-child(1) {
+    margin-left: 350px;
+}
+.control-btn:nth-child(2) {
+    margin-left: 30px;
+}
+.slide_img {
+    width: 340px;
+    height: 210px;
+}
+
+.control-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}

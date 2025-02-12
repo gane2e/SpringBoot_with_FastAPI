@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/sub_layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/inlineTab.css}" rel="stylesheet">
+    <link th:href="@{/css/member/id-find.css}" rel="stylesheet">
+    <style>
+        .checkEmail_after {
+            display: none;
+        }
+    </style>
+
+    <th:block layout:fragment="script">
+
+        <script th:inline="javascript">
+
+            var certificationNumber = 0; //서버에서 보낸 인증번호
+            let timerInterval;  // setInterval을 저장할 변수
+            let timeInSeconds = 3 * 60;  // 초기 타이머 값 (3분 = 180초)
+            var userloginId;
+
+                function checkEmail(){
+                    const email = document.getElementById("email").value;
+                    fetch('/members/email-find-check', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            email: email
+                        })
+                    })
+                        .then(response => response.text())
+                        .then(data => {
+                            if(data === 'false')
+                            alert("해당 이메일로 가입된 회원정보가 없습니다.\n이메일을 다시한번 확인해주세요.")
+                            else {
+                                alert("인증번호 전송에 성공했습니다.")
+                                document.getElementById("checkEmail_before").style.display = 'none';
+                                document.getElementById("checkEmail_after").style.display = 'block';
+                                document.getElementById("userEmail").textContent = email;
+                                startCountdown();
+                                fetch('/members/idPw-find', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        email: email
+                                    })
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        certificationNumber = data.certificationNumber;
+                                        userloginId = data.loginId;
+                                        console.log("인증번호 ==> " + certificationNumber);
+                                    })
+                            }
+                        })
+                        .catch(error => {
+                            alert("서버통신중 오류가 발생하였습니다.")
+                            console.error("AJAX 오류", error)
+                        });
+                }
+                function startCountdown(){
+
+                    timeInSeconds = 3 * 60; // 3분 = 180초
+
+                    const timerElement = document.getElementById("timer");
+
+                    // setInterval을 사용해 1초마다 타이머 업데이트
+                    timerInterval = setInterval(function() {
+                        const minutes = Math.floor(timeInSeconds / 60); // 분 계산
+                        const seconds = timeInSeconds % 60; // 초 계산
+
+                        timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                        timeInSeconds--;
+
+                        // 타이머 종료 조건
+                        if (timeInSeconds < 0) {
+                            clearInterval(timerInterval); // 타이머 종료
+                            alert("인증시간이 만료되었습니다.");
+                        }
+                    }, 1000);
+                }
+                function checkCertificationNumber(){
+                    //사용자가 입력한 인증번호
+                    const userEnteredAuthNo = document.getElementById("userEnteredAuthNo").value;
+                    if(certificationNumber !=  userEnteredAuthNo) {
+                        console.log("certificationNumber = " + certificationNumber)
+                        alert("인증번호가 일치하지 않습니다.");
+                        return;
+                    } else
+                        alert("인증에 성공하였습니다.")
+                        certificationSuccess()
+                }
+            function certificationSuccess() {
+                clearInterval(timerInterval); // 기존 타이머를 중지
+                timeInSeconds = 3 * 60; // 타이머 초기값으로 재설정 (3분)
+
+                const checkEmail_after = document.getElementById("checkEmail_after");
+                // timerElement.textContent = "03:00";  // 화면의 타이머 초기화
+                checkEmail_after.style.display = 'none';
+
+                const userloginIdElement = document.getElementById('userloginId');
+                userloginIdElement.textContent = userloginId;
+                const successElement = document.getElementById('success_container');
+                successElement.style.display = 'block';
+
+            }
+        </script>
+    </th:block>
+    <script>
+            window.onload = function() {
+            // URL 경로에 따라 활성화할 탭 결정
+            const currentPath = window.location.pathname;
+
+            // 탭 요소들
+            const idFindTab = document.getElementById('id-find-tab');
+            const passwordFindTab = document.getElementById('password-find-tab');
+
+            // URL에 맞는 탭을 활성화
+            if (currentPath === '/id-find') {
+            idFindTab.classList.add('active-tab');
+        } else if (currentPath === '/pw-find') {
+            passwordFindTab.classList.add('active-tab');
+        }
+
+            // 탭 클릭 시 페이지 이동 및 활성화 처리
+            idFindTab.addEventListener('click', function() {
+            window.location.href = '/id-find';  // 아이디 찾기 페이지로 이동
+        });
+
+            passwordFindTab.addEventListener('click', function() {
+            window.location.href = '/pw-find';  // 비밀번호 찾기 페이지로 이동
+        });
+        };
+    </script>
+</head>
+<body>
+<div layout:fragment="sub_cont">
+
+    <!-- 탭 -->
+    <div class="tabs">
+        <div id="id-find-tab" class="tab">
+            아이디 찾기
+        </div>
+        <div id="password-find-tab" class="tab">
+            비밀번호 찾기
+        </div>
+    </div>
+
+    <div id="checkEmail" class="checkEmail_area">
+        <div class="title"><span class="blue_txt">아이디</span> 찾기</div>
+        <div class="checkEmail_before" id="checkEmail_before">
+            <div class="txt">회원가입시 입력한 이메일주소를 입력해주세요.</div>
+            <div class="table_area">
+                <table class="idCheckTable">
+                    <tr>
+                        <th>이메일</th>
+                        <td><input type="email" name="email" id="email" required></td>
+                    </tr>
+                </table>
+            </div>
+            <ul class="btn_list">
+                <li>
+                    <button type="button"
+                            onclick="checkEmail()"
+                            class="btn2"
+                            id="requestBtn" style="width: 160px">인증번호 전송하기</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="checkEmail_after" id="checkEmail_after">
+            <div class="txt">인증번호 발송이 완료되었습니다. <br>유효시간 내에 입력해주시기 바랍니다.</div>
+            <div class="table_area">
+                <table class="idCheckTable">
+                    <tr>
+                        <th>이메일</th>
+                        <td><span id="userEmail"></span></td>
+                    </tr>
+                    <tr>
+                        <th>인증번호 입력</th>
+                        <td><input type="text" id="userEnteredAuthNo"></td>
+                    </tr>
+                    <tr>
+                        <th>인증 유효시간</th>
+                        <td>
+                            <div id="timer" style=" font-weight: bold; color: red;">03:00</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <ul class="btn_list">
+                <li>
+                    <button type="button"
+                            onclick="checkCertificationNumber()"
+                            class="btn1">확인</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="success_container" id="success_container" style="display: none">
+            <div class="txt">  ※ 입력하신 정보는 회원님의 사전 동의 없이 공개 또는 제 3 자에게 제공되지 않으며,
+                <br>개인정보보호정책에 따라 보호되고 있습니다.</div>
+            <div class="loginId_area" style="margin-top: 15px; margin-bottom: 30px">
+               아이디 : <span id="userloginId"></span>
+            </div>
+
+            <ul class="btn_list">
+                <li>
+                    <a href="/members/login" class="btn1">로그인하기</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+
+
+
+</div>
+</body>
+</html>
