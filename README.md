@@ -52,23 +52,12 @@
     <img src="https://github.com/user-attachments/assets/221a4c6b-687c-4ba4-b159-39f9d21a8c87" width="800px">
     <img src="https://github.com/user-attachments/assets/e106f967-2c36-4ec7-b972-114781eb9209" width="800px">
     <img src="https://github.com/user-attachments/assets/826be331-6b6e-4b50-8911-36a9d751c372" width="800px">
-
-
-  ![슬라이드46](https://github.com/user-attachments/assets/950744a0-cc0a-4af5-bc9e-9c006a949a60)
-![슬라이드45](https://github.com/user-attachments/assets/7fedcc43-d911-411e-980a-3e07ee20f52d)
-![슬라이드44](https://github.com/user-attachments/assets/36dfe587-3137-404a-a21d-e8cae3405345)
-![슬라이드43](https://github.com/user-attachments/assets/55d76680-91d1-4342-91df-6912a1d0c1e4)
-![슬라이드42](https://github.com/user-attachments/assets/c9f03cb7-1b9c-40be-b8a0-d8e6d54fa3c2)
-![슬라이드41](https://github.com/user-attachments/assets/77bb0db6-c5a3-4d32-b82f-bea49a871b02)
-
-
-
-    <img src="https://github.com/user-attachments/assets/826be331-6b6e-4b50-8911-36a9d751c372" width="800px">
-    <img src="https://github.com/user-attachments/assets/826be331-6b6e-4b50-8911-36a9d751c372" width="800px">
-
-
-
-  
+    <img src="https://github.com/user-attachments/assets/950744a0-cc0a-4af5-bc9e-9c006a949a60" width="800px">
+    <img src="https://github.com/user-attachments/assets/7fedcc43-d911-411e-980a-3e07ee20f52d" width="800px">
+    <img src="https://github.com/user-attachments/assets/36dfe587-3137-404a-a21d-e8cae3405345" width="800px">
+    <img src="https://github.com/user-attachments/assets/55d76680-91d1-4342-91df-6912a1d0c1e4" width="800px">
+    <img src="https://github.com/user-attachments/assets/c9f03cb7-1b9c-40be-b8a0-d8e6d54fa3c2" width="800px">
+    <img src="https://github.com/user-attachments/assets/77bb0db6-c5a3-4d32-b82f-bea49a871b02" width="800px">
 </details>
 <details>
    <summary>결과보고서(추천시스템)</summary>
