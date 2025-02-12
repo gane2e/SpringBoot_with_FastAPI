@@ -4,15 +4,16 @@
 ## 🔖 목차
 1. [✨ 플로우차트](#플로우차트)
 2. [🔮 결과보고서](#결과보고서)
+3. [🛠 개발도구](#개발도구)
 
 
 ## ✨플로우차트
-<img src="https://github.com/user-attachments/assets/f66248ad-4ace-44a8-8a5d-68b1aea65708" width="850px" height="430px"></br>
+<img src="https://github.com/user-attachments/assets/f66248ad-4ace-44a8-8a5d-68b1aea65708" width="800px" height="400px"></br>
 
 ## 🔮결과보고서
 <details>
-   <summary>결과보고서(전체)</summary>
- <img src="https://github.com/user-attachments/assets/fa28ab03-0086-44be-bd30-77d594da59d5" width="800px">
+   <summary>결과보고서(전체보기)</summary>
+    <img src="https://github.com/user-attachments/assets/fa28ab03-0086-44be-bd30-77d594da59d5" width="800px">
     <img src="https://github.com/user-attachments/assets/281a3620-f4dc-4cec-b885-e82e03931845" width="800px">
     <img src="https://github.com/user-attachments/assets/a5b2292b-7827-44d1-baa1-2993bf8bfd45" width="800px">
     <img src="https://github.com/user-attachments/assets/d65a14f1-7bdc-4e09-b355-e93beabae29a" width="800px">
@@ -52,16 +53,24 @@
     <img src="https://github.com/user-attachments/assets/221a4c6b-687c-4ba4-b159-39f9d21a8c87" width="800px">
     <img src="https://github.com/user-attachments/assets/e106f967-2c36-4ec7-b972-114781eb9209" width="800px">
     <img src="https://github.com/user-attachments/assets/826be331-6b6e-4b50-8911-36a9d751c372" width="800px">
-    <img src="https://github.com/user-attachments/assets/950744a0-cc0a-4af5-bc9e-9c006a949a60" width="800px">
-    <img src="https://github.com/user-attachments/assets/7fedcc43-d911-411e-980a-3e07ee20f52d" width="800px">
-    <img src="https://github.com/user-attachments/assets/36dfe587-3137-404a-a21d-e8cae3405345" width="800px">
-    <img src="https://github.com/user-attachments/assets/55d76680-91d1-4342-91df-6912a1d0c1e4" width="800px">
-    <img src="https://github.com/user-attachments/assets/c9f03cb7-1b9c-40be-b8a0-d8e6d54fa3c2" width="800px">
     <img src="https://github.com/user-attachments/assets/77bb0db6-c5a3-4d32-b82f-bea49a871b02" width="800px">
+    <img src="https://github.com/user-attachments/assets/c9f03cb7-1b9c-40be-b8a0-d8e6d54fa3c2" width="800px">
+    <img src="https://github.com/user-attachments/assets/55d76680-91d1-4342-91df-6912a1d0c1e4" width="800px">
+    <img src="https://github.com/user-attachments/assets/36dfe587-3137-404a-a21d-e8cae3405345" width="800px">
+    <img src="https://github.com/user-attachments/assets/7fedcc43-d911-411e-980a-3e07ee20f52d" width="800px">
+    <img src="https://github.com/user-attachments/assets/950744a0-cc0a-4af5-bc9e-9c006a949a60" width="800px">
 </details>
-<details>
-   <summary>결과보고서(추천시스템)</summary>
-   <img src="https://github.com/user-attachments/assets/34801402-bae3-48a0-bb1e-781a642cd6c2" width="800px"></br>
-</details>
+
+### 결과보고서(추천시스템)
+   <img src="https://github.com/user-attachments/assets/77bb0db6-c5a3-4d32-b82f-bea49a871b02" width="800px">
+   <img src="https://github.com/user-attachments/assets/c9f03cb7-1b9c-40be-b8a0-d8e6d54fa3c2" width="800px">
+   <img src="https://github.com/user-attachments/assets/55d76680-91d1-4342-91df-6912a1d0c1e4" width="800px">
+   <img src="https://github.com/user-attachments/assets/36dfe587-3137-404a-a21d-e8cae3405345" width="800px">
+   <img src="https://github.com/user-attachments/assets/7fedcc43-d911-411e-980a-3e07ee20f52d" width="800px">
+
+## 🛠개발도구
+   <img src="https://github.com/user-attachments/assets/bec4baba-e1c5-4df6-849d-f83b180e887d" width="800px">
+
+
 
 
