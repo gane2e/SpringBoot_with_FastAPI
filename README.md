@@ -7,7 +7,7 @@
 
 
 ## ✨플로우차트
-<img src="https://github.com/user-attachments/assets/f66248ad-4ace-44a8-8a5d-68b1aea65708" width="800px" height="430px"></br>
+<img src="https://github.com/user-attachments/assets/f66248ad-4ace-44a8-8a5d-68b1aea65708" width="850px" height="430px"></br>
 
 ## 🔮결과보고서
 <details>
