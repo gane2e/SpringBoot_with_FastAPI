@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/sub_layout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/course/courseList.css}" rel="stylesheet">
+    <!-- 사용자 CSS 추가 -->
+
+    <!-- 사용자 스크립트 추가 -->
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+
+            $(document).ready(function(){
+                $("#searchBtn").on("click",function(e) {
+                    e.preventDefault();
+                    page(0);
+                });
+            });
+            function page(page){
+                location.href="/course/courses/" + page
+            }
+            function userIdApi(){
+                fetch("/api/userId", {
+                    method: "POST", // POST 요청
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(response => response.json()) // JSON 변환
+                    .then(data => {
+                       if (data) {
+                           let id = data.userId;
+                           let username = data.username;
+                           let usernameElement = document.getElementById("username-display");
+                           usernameElement.textContent = username; // 화면에 값 표시
+                           console.log(id)
+                           fetch(`http://127.0.0.1:8000/recommend/${id}`, {
+                               method: "GET",
+                               headers: {
+                                   "Content-Type": "application/json"
+                               }
+                           })
+                               .then(response => response.json()) // JSON 변환
+                               .then(data => {
+                                   if(data) {
+                                       fetch('/course/recommendCourses', {
+                                           method: "POST",
+                                           headers: {
+                                               "Content-Type": "application/json"
+                                           },
+                                           body: JSON.stringify(data)
+                                       })
+                                           .then(response => response.json()) // JSON 변환
+                                            .then(data => { //courseIds
+                                                const queryString = createQueryString(data);
+                                                fetch(`/course/AiRecommendations?${queryString}`, {
+                                                    method: "GET",
+                                                    headers: {
+                                                        "Content-Type": "application/json"
+                                                    }
+                                                })
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        openModal(data)
+                                                        console.log(data)
+                                                    })
+                                           })
+
+                                   }
+                                   console.log(data)
+                               })
+                       }
+                    })
+
+                function createQueryString(data) {
+                    // 배열의 각 요소를 쿼리 파라미터로 변환
+                    const queryString = data.map(id => `courseId=${encodeURIComponent(id)}`).join('&');
+                    return queryString;
+                }
+
+                // 모달 열기
+                function openModal(courseData) {
+                    let modal = document.getElementById("myModal");
+                    let courseList = document.getElementById("courseList");
+                    courseList.innerHTML = ""; // 기존 리스트 초기화
+
+                    // 받아온 데이터를 리스트에 추가
+                    courseData.forEach(course => {
+                        let listItem = document.createElement("li");
+
+                        listItem.onclick = () => {
+                            window.location.href = '/course/courseDtl/' + course.courseId
+                        };
+
+                        listItem.style.cursor = "pointer";
+
+                        // 이미지 태그 생성
+                        let img = document.createElement("img");
+                        img.src = course.imgUrl ; // 이미지 URL 설정
+                        img.alt = course.title; // 접근성 향상
+                        img.style.width = "100px"; // 원하는 크기로 조정
+                        img.style.marginRight = "10px"; // 이미지와 텍스트 간격 추가
+
+                        // 텍스트 노드 생성
+                        let text = document.createTextNode(`[${course.title}]- ${course.description}`);
+
+                        // 리스트 아이템에 이미지와 텍스트 추가
+                        listItem.appendChild(img);
+                        listItem.appendChild(text);
+
+                        courseList.appendChild(listItem);
+                    });
+
+                    modal.style.display = "block"; // 모달 표시
+                }
+
+
+                // 모달 닫기
+                document.querySelector(".close").addEventListener("click", function() {
+                    document.getElementById("myModal").style.display = "none";
+                });
+
+                // 모달 바깥 클릭 시 닫기
+                window.onclick = function(event) {
+                    let modal = document.getElementById("myModal");
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+            }
+        </script>
+    </th:block>
+</head>
+    <div layout:fragment="sub_cont">
+
+        <!-- 모달 -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>AI가 추천한 <span id="username-display" style="color: #0a53be"> </span>님 맞춤 강의 <span><img src="/img/학습.png" width="50px"></span></h2>
+                <ul id="courseList" class="ai_list"></ul>
+            </div>
+        </div>
+
+
+        <form action="/course/courses/search" method="get" id="searchForm">
+        <div class="search_box">
+
+            <!--1차 카테고리 검색-->
+            <div class="search_title">교육 카테고리</div>
+            <select id="categorySelect" onchange="loadSubCategories()"
+                class="custom-select" name="categoryId">
+                <option value="">전체</option>
+                <th:block th:each="category : ${categories}">
+                    <option th:value="${category.categoryId}"
+                            th:text="${category.categoryName}"
+                            th:selected="${category.categoryId == categoryId}">
+                    </option>
+                </th:block>
+            </select>
+
+            <!--2차 카테고리 검색-->
+            <select id="subCategorySelect"
+                    class="custom-select">
+                <option value="">전체</option>
+                <input type="hidden" id="subCategoryId" name="subCategoryId" />
+            </select>
+
+            <!--강의명 검색-->
+            <div class="search_title">강의 명</div>
+            <input type="text" class="scrh_inp" placeholder="검색어를 입력해주세요." title="검색어를 입력해주세요." id="searchKeyword"
+                   name="keyword" th:value="${keyword}" >
+
+            <!--검색 버튼-->
+            <button type="submit" class="search_btn"><span class="text">검색</span></button>
+            <!--검색 초기화 버튼-->
+            <button type="button" class="reset_btn" onclick="resetSearchForm()"><span class="text">초기화</span></button>
+        </div>
+    </form>
+
+        <div class="total_count_area">
+            <span>
+                <img src="/img/total.png" class="total_img">
+            </span>
+            <span class="total_count">
+                total : <span class="red_txt" th:text="${total}">99</span>
+            </span>
+            <span class="ai_click" sec:authorize="isAuthenticated()">
+                <img src="/img/AIicon.png" class="total_img">
+                <a onclick="userIdApi()">AI가 회원님의 리뷰데이터를 기반으로 강의를 추천해드려요!</a>
+            </span>
+        </div>
+
+   <ul class="course_list_ul">
+
+       <li class="course_list_li" th:each="course, status : ${courseList}">
+
+           <a th:href="'/course/courseDtl/' + ${course.courseId}" >
+               <div class="image_container">
+                   <img class="thum" th:src="${course.imgUrl}">
+                   <div class="status" th:text="${course.recruitment_status}"></div>
+               </div>
+           </a>
+
+           <div class="category_area">
+               <span class="category_title1" th:text="${course.categoryName}">  </span>
+               <span class="category_title1"> &#10095; </span>
+               <span class="category_title2" th:text="${course.subCategoryName}">  </span>
+           </div>
+
+           <a th:href="'/course/courseDtl/' + ${course.courseId}" >
+               <p class="courseTitle" th:text="${course.title}"></p>
+           </a>
+           <div class="rating_area">
+               <img src="/img/rating.png"> [[${course.totalRating}]] ([[${course.ratingCount}]])
+           </div>
+
+       </li>
+   </ul>
+    <input type="hidden" id="selectSubCategory" th:value="${subCategoryId}">
+
+        <div th:with="start=${(courseList.number/maxPage)*maxPage + 1}, end=(${(courseList.totalPages == 0) ? 1 : (start + (maxPage - 1) < courseList.totalPages ? start + (maxPage - 1) : courseList.totalPages)})" >
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item" th:classappend="${courseList.first} ? 'disabled' : ''">
+                    <a th:onclick="'javascript:page(' + ${courseList.number - 1} + ')'" aria-label="Previous" class="page-link" style="cursor: pointer">
+                        <span aria-hidden="true">이전</span>
+                    </a>
+                </li>
+
+                <li class="page-item" th:each="page : ${#numbers.sequence(start, end)}" th:classappend="${courseList.number == page - 1} ? 'active' : ''">
+                    <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link" style="cursor: pointer">[[${page}]]</a>
+                </li>
+
+                <li class="page-item" th:classappend="${courseList.last} ? 'disabled' : ''">
+                    <a th:onclick="'javascript:page(' + ${courseList.number + 1} + ')'" aria-label="Next" class="page-link" style="cursor: pointer">
+                        <span aria-hidden="true">다음</span>
+                    </a>
+                </li>
+
+
+            </ul>
+        </div>
+
+
+    <!-- 카테고리 스크립트 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:inline="javascript">
+        function loadSubCategories() {
+            const categoryId = document.getElementById("categorySelect").value;
+            // AJAX 요청
+            $.ajax({
+                url: '/subcategories?categoryId=' + categoryId, // 요청 URL
+                type: 'GET',
+                dataType: 'json',
+                success: function (subCategories) {
+                    const subCategorySelect = document.getElementById("subCategorySelect");
+                    subCategorySelect.innerHTML = '<option value="">전체</option>'; // 초기화
+
+                    // 서브 카테고리 옵션 추가
+                    subCategories.forEach(subCategory => {
+                        const option = document.createElement("option");
+                        option.value = subCategory.subCategoryId;
+                        option.text = subCategory.subCategoryName;
+
+                        subCategorySelect.add(option);
+                    });
+
+                    //hidden input에 값 설정
+                    subCategorySelect.addEventListener('change', function () {
+                        document.getElementById('subCategoryId').value = this.value;
+                    });
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("Error fetching subcategories:", textStatus, errorThrown); // 오류 로그
+                }
+            });
+        }
+
+        function resetSearchForm() {
+            document.getElementById("searchForm").reset();
+
+            // 서브카테고리 셀렉트 박스를 초기화 (전체로 설정)
+            var subCategorySelect = document.getElementById("subCategorySelect");
+            subCategorySelect.innerHTML = '<option value="">전체</option>';
+
+            // URL에서 쿼리 파라미터를 제거하여 새로고침 (초기화된 상태로 돌아감)
+            // URL의 쿼리 파라미터만 제거
+            var currentUrl = window.location.pathname;
+            window.history.pushState(null, "", currentUrl); // 쿼리 파라미터를 지우고 리로드
+            window.location.reload(); // 페이지 새로고침
+        }
+
+    </script>
+
+</div>
+
+
+</html>
